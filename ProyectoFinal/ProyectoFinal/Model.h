@@ -182,7 +182,7 @@ private:
 
 			for (GLuint j = 0; j < textures_loaded.size(); j++)
 			{
-				if (textures_loaded[j].path == str)
+				if ((aiString)textures_loaded[j].path == str)
 				{
 					textures.push_back(textures_loaded[j]);
 					skip = true; // A texture with the same filepath has already been loaded, continue to next one. (optimization)
@@ -196,7 +196,7 @@ private:
 				Texture texture;
 				texture.id = TextureFromFile(str.C_Str(), this->directory);
 				texture.type = typeName;
-				texture.path = str;
+				(aiString)texture.path = str;
 				textures.push_back(texture);
 
 				this->textures_loaded.push_back(texture);  // Store it as texture loaded for entire model, to ensure we won't unnecesery load duplicate textures.
