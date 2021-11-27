@@ -1,4 +1,4 @@
-# Blender MTL File: 'chewbaca.blend'
+# Blender MTL File: 'ChristmasTree.blend'
 # Material Count: 1
 
 newmtl Christmas_Tree
@@ -10,4 +10,4 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 1
-map_Kd D:\\2022-1\\Lab. computación gráfica\\Modelos-starWars\\ChristmasTree\\ChristmasTree.png
+map_Kd ChristmasTree.png

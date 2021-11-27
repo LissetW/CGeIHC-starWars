@@ -1091,10 +1091,19 @@ int main()
 		drawInPosition(vec3( -1.5894f,0.31122f, -0.80489f), CupPurple, VAO, lightingShader, vec3(-32.16f, 0.0f, 0.0f));
 
 
-		//Fantasma
+		/***********************
+		*	Anakin Fantasma     *
+		************************/
 		drawInPosition(vec3(1.4433f, 0.18776f, -2.2851f), AnakinGhost, VAO, lightingShader, vec3(0.0f, 33.9f, 0.0f));
 		glDisable(GL_BLEND);
 
+		/***************************
+		*
+		*	Carga Adornos navideños
+		*
+		****************************/
+		// ChristmasTree
+		drawInPosition(vec3(-3.3525f, 0.31978f, 1.4678f), ChristmasTree, VAO, lightingShader, vec3(0.0f, 71.4f, 0.0f));
 		/*_______________________________Personaje Animado___________________________*/ 
 		/*animShader.Use();
 		modelLoc = glGetUniformLocation(animShader.Program, "model");
