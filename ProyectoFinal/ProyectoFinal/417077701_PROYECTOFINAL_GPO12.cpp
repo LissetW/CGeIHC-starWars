@@ -318,7 +318,8 @@ int main()
 	//Sillon
 	Model Couch((char*)"Models/LegoStarWarsTCSModels/Forniture/Couch/couch.obj");
 
-
+	//Arbol de navidad
+	Model ChristmasTree((char*)"Models/LegoStarWarsTCSModels/Forniture/ChristmasTree/ChristmasTree.obj");
 	/*********************************
 			Personajes
 	*********************************/
@@ -613,14 +614,14 @@ int main()
 	};
 
 	//Posición de mesas con 2 objetos
-	array<Position, 7> tablePositions = {
+	array<Position, 6> tablePositions = {
 		Position { vec3(-2.6678f, 0.14909f, -2.1579f),0.0f },
 		Position { vec3(-1.0947f, 0.14909f, -2.042f),90.0f },
 		Position { vec3(0.8282f, 0.14909f, -1.7235f),45.0f },
 		Position { vec3(1.91f, 0.14909f, -0.2404f),0.0f },
 		Position { vec3(0.97f, 0.14909f, 1.41f),-45.0f },
 		Position { vec3(-0.83f, 0.14909f, 1.55f),90.0f },
-		Position { vec3(-3.6071f, 0.14909f, 1.5123f),0.0f }
+		//Position { vec3(-3.6071f, 0.14909f, 1.5123f),0.0f }
 	};
 	array<Position, 7> tableCouchPositions = {
 		Position { vec3(-2.3678f, 0.14909f, -4.061f),0.0f },
@@ -1021,7 +1022,7 @@ int main()
 
 		*******************************************/
 		//MugOrange
-		drawInPosition(vec3(-3.5737f, 0.252157f, 1.5198f), MugOrange, VAO, lightingShader, vec3(0.0f, 0.0f, 0.0f));
+		//drawInPosition(vec3(-3.5737f, 0.252157f, 1.5198f), MugOrange, VAO, lightingShader, vec3(0.0f, 0.0f, 0.0f));
 		drawInPosition(vec3(0.5606f, 0.252157f, -3.6348f), MugOrange, VAO, lightingShader, vec3(0.0f, 0.0f, 0.0f));
 		drawInPosition(vec3(2.5011f, 0.252157f,  3.4209f), MugOrange, VAO, lightingShader, vec3(0.0f, 90.0f, 0.0f));
 

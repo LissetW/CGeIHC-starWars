@@ -156,11 +156,11 @@
     <ClInclude Include="Model.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Shaders\modelLoading.frag" />
     <None Include="Shaders\modelLoading.vs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="417077701_PROYECTOFINAL_GPO12.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

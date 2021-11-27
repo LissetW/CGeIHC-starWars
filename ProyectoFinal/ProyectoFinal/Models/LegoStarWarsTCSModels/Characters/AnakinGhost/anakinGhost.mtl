@@ -1,5 +1,5 @@
 # Blender MTL File: 'anakin.blend'
-# Material Count: 4
+# Material Count: 5
 
 newmtl Material.001
 Ns 225.000000
@@ -13,7 +13,19 @@ illum 2
 map_Kd cara.png
 map_d cara.png
 
-newmtl Tex_0005_0_dds
+newmtl Rojo
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.002336 0.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd Rojo.png
+map_d Rojo.png
+
+newmtl White
 Ns 225.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.800000 0.800000 0.800000
@@ -22,7 +34,8 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd C:\\Users\\franc\\Desktop\\legoStarWarsModels\\_NinjaRipper\\2021.11.24_16.15.49_LEGOStarWarsSaga.exe_37276\\2021.11.24_16.19.05_LEGOStarWarsSaga.exe\\Tex_0005_0.dds
+map_Kd Blanco.png
+map_d Blanco.png
 
 newmtl body
 Ns 225.000000
