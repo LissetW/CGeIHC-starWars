@@ -704,7 +704,15 @@ int main()
 
 	//Proyectile
 	Model Proyectile((char*)"Models/LegoStarWarsTCSModels/Forniture/Proyectile/Proyectile.obj");
-
+	//Botas navideñas
+	Model Bota1((char*)"Models/LegoStarWarsTCSModels/Decoration/botaNavidena/bota1.obj");
+	Model Bota2((char*)"Models/LegoStarWarsTCSModels/Decoration/botaNavidena/bota2.obj");
+	Model Bota3((char*)"Models/LegoStarWarsTCSModels/Decoration/botaNavidena/bota3.obj");
+	Model Bota4((char*)"Models/LegoStarWarsTCSModels/Decoration/botaNavidena/bota4.obj");
+	Model Bota5((char*)"Models/LegoStarWarsTCSModels/Decoration/botaNavidena/bota10.obj");
+	Model Bota6((char*)"Models/LegoStarWarsTCSModels/Decoration/botaNavidena/bota11.obj");
+	Model Bota7((char*)"Models/LegoStarWarsTCSModels/Decoration/botaNavidena/bota12.obj");
+	Model Bota8((char*)"Models/LegoStarWarsTCSModels/Decoration/botaNavidena/bota13.obj");
 	/*********************************
 			Vehiculos
 	*********************************/
@@ -1405,7 +1413,14 @@ int main()
 		drawInPosition(vec3( 1.6387f, 0.82373f,  2.3833f), LampBase, VAO, lightingShader, vec3(0.0f, 270.0f, 0.0f));
 		drawInPosition(vec3(-0.8515f, 0.82373f,  2.3833f), LampBase, VAO, lightingShader, vec3(0.0f, 270.0f, 0.0f));
 		drawInPosition(vec3(-3.0212f, 0.82373f,  2.3833f), LampBase, VAO, lightingShader, vec3(0.0f, 90.0f, 0.0f));
-
+		// Botas de navidad
+		drawInPosition(vec3(-3.0212f, 0.5f, -2.977f), Bota1, VAO, lightingShader, vec3(0.0f, 90.0f, 0.0f));
+		drawInPosition(vec3(2.1736f, 0.5f, -2.7845f), Bota2, VAO, lightingShader, vec3(0.0f, 47.9f, 0.0f));
+		drawInPosition(vec3(3.2908f, 0.5f, -1.1816f), Bota3, VAO, lightingShader, vec3(0.0f, 0.0f, 0.0f));
+		drawInPosition(vec3(3.9499f, 0.5f, 0.7824f), Bota4, VAO, lightingShader, vec3(0.0f, 0.0f, 0.0f));
+		drawInPosition(vec3(1.6387f, 0.5f, 2.3833f), Bota5, VAO, lightingShader, vec3(0.0f, 270.0f, 0.0f));
+		drawInPosition(vec3(-0.8515f, 0.5f, 2.3833f), Bota6, VAO, lightingShader, vec3(0.0f, 270.0f, 0.0f));
+		drawInPosition(vec3(-3.0212f, 0.5f, 2.3833f), Bota7, VAO, lightingShader, vec3(0.0f, 90.0f, 0.0f));
 		// Santa Claus
 		// Body
 		mat4 SantaClausBodyMatrix = mat4(1);
