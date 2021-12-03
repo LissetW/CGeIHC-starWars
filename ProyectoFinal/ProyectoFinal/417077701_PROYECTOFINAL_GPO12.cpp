@@ -78,14 +78,14 @@ float posXAnakinG{ PosIniAnakinG.x },
 	  posZAnakinG{ PosIniAnakinG.z },
 	  rotBodyYAnakinG{ 33.9f },
 	  rotBodyXAnakinG{ 0.0f },
-	  rotLefLegAnakinG{ 0.0f },
+	  rotLefTLegAnakinG{ 0.0f },
 	  rotRightLegAnakinG{ 0.0f },
 	  rotLeftArmAnakinG{ 0.0f },
 	  rotRightArmAnakinG{ 0.0f },
 	  rotRightWristAnakinG{ 0.0f },
 	  rotLeftWristAnakinG{ 0.0f };
 
-#define MAX_FRAMES_ANAKING 9
+#define MAX_FRAMES_ANAKING 10
 
 typedef struct _frameAnakin
 {
@@ -95,7 +95,7 @@ typedef struct _frameAnakin
 		  posZAnakinG,
 		  rotBodyXAnakinG,
 		  rotBodyYAnakinG,
-		  rotLefLegAnakinG,
+		  rotLefTLegAnakinG,
 		  rotRightLegAnakinG,
 		  rotLeftArmAnakinG,
 		  rotRightArmAnakinG,
@@ -107,7 +107,7 @@ typedef struct _frameAnakin
 		  incPosZAnakinG,
 		  incRotBodyXAnakinG,
 		  incRotBodyYAnakinG,
-		  incRotLefLegAnakinG,
+		  incrotLefTLegAnakinG,
 		  incRotRightLegAnakinG,
 		  incRotLeftArmAnakinG,
 		  incRotRightArmAnakinG,
@@ -117,7 +117,7 @@ typedef struct _frameAnakin
 }FRAME_ANAKIN;
 
 FRAME_ANAKIN KeyFrameAnakinG[MAX_FRAMES_ANAKING];
-int FrameIndexAnakin = 0;			//introducir datos
+int FrameIndexAnakin = 10;			//introducir datos
 bool playAnakin = false;
 int playIndexAnakin = 0;
 
@@ -136,7 +136,7 @@ void saveFrameAnakin(void)
 	KeyFrameAnakinG[FrameIndexAnakin].rotBodyXAnakinG = rotBodyXAnakinG;
 	KeyFrameAnakinG[FrameIndexAnakin].rotBodyYAnakinG = rotBodyYAnakinG;
 
-	KeyFrameAnakinG[FrameIndexAnakin].rotLefLegAnakinG = rotLefLegAnakinG;
+	KeyFrameAnakinG[FrameIndexAnakin].rotLefTLegAnakinG = rotLefTLegAnakinG;
 	KeyFrameAnakinG[FrameIndexAnakin].rotRightLegAnakinG = rotRightLegAnakinG;
 	KeyFrameAnakinG[FrameIndexAnakin].rotLeftArmAnakinG = rotLeftArmAnakinG;
 	KeyFrameAnakinG[FrameIndexAnakin].rotRightArmAnakinG = rotRightArmAnakinG;
@@ -151,7 +151,7 @@ void saveFrameAnakin(void)
 		<< "posZAnakinG: " << posZAnakinG << endl
 		<< "rotBodyXAnakinG: " << rotBodyXAnakinG << endl
 		<< "rotBodyYAnakinG: " << rotBodyYAnakinG << endl
-		<< "rotLefLegAnakinG: " << rotLefLegAnakinG << endl
+		<< "rotLefTLegAnakinG: " << rotLefTLegAnakinG << endl
 		<< "rotRihtLegAnakinG: " << rotRightLegAnakinG << endl
 		<< "rotLeftArmAnakinG: " << rotLeftArmAnakinG << endl
 		<< "rotRightArmAnakinG: " << rotRightArmAnakinG << endl
@@ -159,7 +159,7 @@ void saveFrameAnakin(void)
 		<< "rotLeftWristAnakinG: " << rotLeftWristAnakinG << endl
 		<< "{" << posXAnakinG << ", " << posYAnakinG << ", " << posZAnakinG << ", "
 		<< rotBodyXAnakinG << ", " << rotBodyYAnakinG << ", "
-		<< rotLefLegAnakinG << ", " << rotRightLegAnakinG << ", " << rotLeftArmAnakinG << ", " << rotRightArmAnakinG 
+		<< rotLefTLegAnakinG << ", " << rotRightLegAnakinG << ", " << rotLeftArmAnakinG << ", " << rotRightArmAnakinG << ", "
 		<< rotRightWristAnakinG << ", " << rotLeftWristAnakinG << "}"
 		<< "\n" << endl;
 	FrameIndexAnakin++;
@@ -174,7 +174,7 @@ void resetElementsAnakin(void)
 	rotBodyXAnakinG = KeyFrameAnakinG[0].rotBodyXAnakinG;
 	rotBodyYAnakinG = KeyFrameAnakinG[0].rotBodyYAnakinG;
 
-	rotLefLegAnakinG = KeyFrameAnakinG[0].rotLefLegAnakinG;
+	rotLefTLegAnakinG = KeyFrameAnakinG[0].rotLefTLegAnakinG;
 	rotRightLegAnakinG = KeyFrameAnakinG[0].rotRightLegAnakinG;
 	rotLeftArmAnakinG = KeyFrameAnakinG[0].rotLeftArmAnakinG;
 	rotRightArmAnakinG = KeyFrameAnakinG[0].rotRightArmAnakinG;
@@ -193,7 +193,7 @@ void interpolationAnakin(void)
 	KeyFrameAnakinG[playIndexAnakin].incRotBodyXAnakinG = (KeyFrameAnakinG[playIndexAnakin + 1].rotBodyXAnakinG - KeyFrameAnakinG[playIndexAnakin].rotBodyXAnakinG) / i_max_steps;
 	KeyFrameAnakinG[playIndexAnakin].incRotBodyYAnakinG = (KeyFrameAnakinG[playIndexAnakin + 1].rotBodyYAnakinG - KeyFrameAnakinG[playIndexAnakin].rotBodyYAnakinG) / i_max_steps;
 
-	KeyFrameAnakinG[playIndexAnakin].incRotLefLegAnakinG = (KeyFrameAnakinG[playIndexAnakin + 1].rotLefLegAnakinG - KeyFrameAnakinG[playIndexAnakin].rotLefLegAnakinG) / i_max_steps;
+	KeyFrameAnakinG[playIndexAnakin].incrotLefTLegAnakinG = (KeyFrameAnakinG[playIndexAnakin + 1].rotLefTLegAnakinG - KeyFrameAnakinG[playIndexAnakin].rotLefTLegAnakinG) / i_max_steps;
 	KeyFrameAnakinG[playIndexAnakin].incRotRightLegAnakinG = (KeyFrameAnakinG[playIndexAnakin + 1].rotRightLegAnakinG - KeyFrameAnakinG[playIndexAnakin].rotRightLegAnakinG) / i_max_steps;
 	KeyFrameAnakinG[playIndexAnakin].incRotLeftArmAnakinG = (KeyFrameAnakinG[playIndexAnakin + 1].rotLeftArmAnakinG - KeyFrameAnakinG[playIndexAnakin].rotLeftArmAnakinG) / i_max_steps;
 	KeyFrameAnakinG[playIndexAnakin].incRotRightWristAnakinG = (KeyFrameAnakinG[playIndexAnakin + 1].rotRightWristAnakinG - KeyFrameAnakinG[playIndexAnakin].rotRightWristAnakinG) / i_max_steps;
@@ -224,7 +224,7 @@ rotLeftArmSanta{ 0.0f },
 rotRightArmSanta{ 0.0f },
 rotRightWristSanta{ 0.0f };
 
-#define MAX_FRAMES_SANTA 9
+#define MAX_FRAMES_SANTA 10
 
 typedef struct _frameSanta
 {
@@ -254,7 +254,7 @@ typedef struct _frameSanta
 }FRAME_SANTA;
 
 FRAME_SANTA KeyFrameSanta[MAX_FRAMES_SANTA];
-int FrameIndexSanta = 0;			//introducir datos
+int FrameIndexSanta = 10;			//introducir datos
 bool playSanta = false;
 int playIndexSanta = 0;
 
@@ -293,9 +293,9 @@ void saveFrameSanta(void)
 		<< "rotRightArmSanta: " << rotRightArmSanta << endl
 		<< "rotRightWristSanta: " << rotRightWristSanta << endl
 		<< "{" << posXSanta << ", " << posYSanta << ", " << posZSanta << ", "
-		<< rotBodyXSanta << ", "  << rotBodyYSanta << ", "
-		<< rotLeftLegSanta << ", " << rotRightLegSanta << ", " << rotLeftArmSanta << ", " << rotRightArmSanta << rotRightWristSanta << "}"
-		<< "\n" << endl;
+		<< rotBodyXSanta << ", " << rotBodyYSanta << ", "
+		<< rotLeftLegSanta << ", " << rotRightLegSanta << ", " << rotLeftArmSanta << ", " << rotRightArmSanta << ", "
+		<< rotRightWristSanta << "}" << "\n" << endl;
 	
 	FrameIndexSanta++;
 }
@@ -744,16 +744,29 @@ int main()
 		{6.05441f,0.23264f,0.9020082f,-44.0f,23.0f,-33.0f,-7.0f,169.997f},
 	};
 
-	float animAnakin[MAX_FRAMES_ANAKING][10] = {
-		{1.1433, 0.3221, -2.6351, 0, 33.9, -4, -29,  37, 0, 67},
-		{1.4933, 0.3221, -2.2851, 0, 33.9, 30, -29,  56, 0, 52},
-		{1.727,  0.29312, -1.862, 0, -120, 12,  -8, -30, 53,33},
-		{1.6433, 0.3221,  -2.1851,0, 72.9, 25, -29, 31, 0, 33},
-		{1.64329, 0.3221, -2.18509, 0, 12.9001, 25, -58, 43, 0,-14.0001},
-		{1.74327, 0.8221, -1.7351, 66, 9.90043, -46.0001, -101, 37, 0, -23.0003},
-		{1.89327, 0.8221, -1.6351, 48, -154.1, -26.0001, -85.0001, 37, 0, -23.0003},
-		{1.99327, 0.3221, -1.5351, 4, -154.1, -11.0001, -47.0001, 16, 0, -86.0003},
-		{1.99327, 0.3221, -1.5351, 1, -205.1, -11.0001, -47.0001, 16, 0, -86.0003}
+	float animAnakin[MAX_FRAMES_ANAKING][11] = {
+		{1.0433, 0.3221, -2.7851, 0, 33.9, 0, 0, -40, 21, 0, 79},
+		{1.4433, 0.3221, -2.4351, 0, 33.9, 36, -19, -40, -34, 0, 53},
+		{1.4933, 0.3221, -2.3351, 0, 68.9, 36, -19, -40, -80, 0, 34},
+		{1.49329, 0.3221, -2.48509, 3, 37.8999, 36, 1, -62, 21, 0, -1.99998},
+		{1.49329, 0.6221, -2.33508, 3, 37.8998, 35, 26, -100, -71, 0, 4.00006},
+		{1.64329, 0.8221, -1.98508, 59, 0.899818, -75, -73, -100, -71, 0, 4.00006},
+		{1.84329, 0.8221, -1.63508, 59, -115.1, -75, -21, -75, -53, 0, -35.9999},
+		{1.69329, 0.3221, -1.58508, 7, -146.1, 3.8147e-05, -40, -75, -53, 0, -68.9999},
+		{1.69329, 0.3221, -1.68508, 7, -210.1, 3.8147e-05, -40, -75, -53, 0, -90.9999},
+		{1.69329, 0.3221, -1.48508, 7, -208.1, 3.8147e-05, -1, -75, 6, 0, -9.99994}
+	};
+	float animSanta[MAX_FRAMES_ANAKING][10] = {
+		{1.827, 0.24312, -1.662, 0, -143, 0, -1, 0, 61, 0},
+		{1.627, 0.24312, -2.062, 0, -143, -44, 37, 0, -44, 28},
+		{1.627, 0.24312, -2.062, 0, -105, -1, 67, -28, -52, 40},
+		{1.627, 0.24312, -1.96199, -6, -158, -0.999961, -32.0001, -28, -51.9999, 70},
+		{1.577, 0.19312, -1.91199, -25, -160, -55.9999, -66.0002, 71, -51.9999, 69.9999},
+		{1.577, 0.19312, -1.91199, 22, -171, 24.0001, -66.0002, 36, -57.9999, 43.9999},
+		{1.577, 0.29312, -1.91199, 1, -109, 24.0001, -15.0002, 36, -78.9999, 7.99992},
+		{1.577, 0.29312, -1.91199, 1, -50, 24.0001, -15.0002, 60, -100, 7.99992},
+		{1.577, 0.29312, -1.91199, 1, -25.0002, 34.0001, -15.0002, -38, -131, 1.99992},
+		{1.577, 0.09312, -1.91199, -87, -25.0002, -92.9999, -106, -67, -82.9999, 1.99992}
 	};
 	//Inicialización de KeyFrames
 	//aqui se cargan
@@ -782,19 +795,19 @@ int main()
 	//Inicialización de KeyFrames Anakin
 	for (int i = 0; i < MAX_FRAMES_ANAKING; i++)
 	{
-		KeyFrameAnakinG[i].posXAnakinG = 0.0f;
-		KeyFrameAnakinG[i].posYAnakinG = 0.0f;
-		KeyFrameAnakinG[i].posZAnakinG = 0.0f;
+		KeyFrameAnakinG[i].posXAnakinG = animAnakin[i][0];
+		KeyFrameAnakinG[i].posYAnakinG = animAnakin[i][1];
+		KeyFrameAnakinG[i].posZAnakinG = animAnakin[i][2];
 
-		KeyFrameAnakinG[i].rotBodyXAnakinG = 0.0f;
-		KeyFrameAnakinG[i].rotBodyYAnakinG = 0.0f;
+		KeyFrameAnakinG[i].rotBodyXAnakinG = animAnakin[i][3];
+		KeyFrameAnakinG[i].rotBodyYAnakinG = animAnakin[i][4];
 
-		KeyFrameAnakinG[i].rotLefLegAnakinG = 0.0f;
-		KeyFrameAnakinG[i].rotRightLegAnakinG = 0.0f;
-		KeyFrameAnakinG[i].rotLeftArmAnakinG = 0.0f;
-		KeyFrameAnakinG[i].rotRightArmAnakinG = 0.0f;
-		KeyFrameAnakinG[i].rotRightWristAnakinG = 0.0f;
-		KeyFrameAnakinG[i].rotLeftWristAnakinG = 0.0f;
+		KeyFrameAnakinG[i].rotLefTLegAnakinG = animAnakin[i][5];
+		KeyFrameAnakinG[i].rotRightLegAnakinG = animAnakin[i][6];
+		KeyFrameAnakinG[i].rotLeftArmAnakinG = animAnakin[i][7];
+		KeyFrameAnakinG[i].rotRightArmAnakinG = animAnakin[i][8];
+		KeyFrameAnakinG[i].rotRightWristAnakinG = animAnakin[i][9];
+		KeyFrameAnakinG[i].rotLeftWristAnakinG = animAnakin[i][10];
 
 		KeyFrameAnakinG[i].incPosXAnakinG = 0.0f;
 		KeyFrameAnakinG[i].incPosYAnakinG = 0.0f;
@@ -802,7 +815,7 @@ int main()
 
 		KeyFrameAnakinG[i].incRotBodyXAnakinG = 0.0f;
 		KeyFrameAnakinG[i].incRotBodyYAnakinG = 0.0f;
-		KeyFrameAnakinG[i].incRotLefLegAnakinG = 0.0f;
+		KeyFrameAnakinG[i].incrotLefTLegAnakinG = 0.0f;
 		KeyFrameAnakinG[i].incRotLeftArmAnakinG = 0.0f;
 		KeyFrameAnakinG[i].incRotRightWristAnakinG = 0.0f;
 		KeyFrameAnakinG[i].incRotLeftWristAnakinG = 0.0f;
@@ -813,18 +826,18 @@ int main()
 	//Inicialización de KeyFrames Santa
 	for (int i = 0; i < MAX_FRAMES_SANTA; i++)
 	{
-		KeyFrameSanta[i].posXSanta = 0.0f;
-		KeyFrameSanta[i].posYSanta = 0.0f;
-		KeyFrameSanta[i].posZSanta = 0.0f;
+		KeyFrameSanta[i].posXSanta = animSanta[i][0];
+		KeyFrameSanta[i].posYSanta = animSanta[i][1];
+		KeyFrameSanta[i].posZSanta = animSanta[i][2];
 
-		KeyFrameSanta[i].rotBodyXSanta = 0.0f;
-		KeyFrameSanta[i].rotBodyYSanta = 0.0f;
+		KeyFrameSanta[i].rotBodyXSanta = animSanta[i][3];
+		KeyFrameSanta[i].rotBodyYSanta = animSanta[i][4];
 
-		KeyFrameSanta[i].rotLeftLegSanta = 0.0f;
-		KeyFrameSanta[i].rotRightLegSanta = 0.0f;
-		KeyFrameSanta[i].rotLeftArmSanta = 0.0f;
-		KeyFrameSanta[i].rotRightArmSanta = 0.0f;
-		KeyFrameSanta[i].rotRightWristSanta = 0.0f;
+		KeyFrameSanta[i].rotLeftLegSanta = animSanta[i][5];
+		KeyFrameSanta[i].rotRightLegSanta = animSanta[i][6];
+		KeyFrameSanta[i].rotLeftArmSanta = animSanta[i][7];
+		KeyFrameSanta[i].rotRightArmSanta = animSanta[i][8];
+		KeyFrameSanta[i].rotRightWristSanta = animSanta[i][9];
 
 		KeyFrameSanta[i].incPosXSanta = 0.0f;
 		KeyFrameSanta[i].incPosYSanta = 0.0f;
@@ -1567,7 +1580,7 @@ int main()
 		// Leftt Leg
 		mat4 AnakinGhostLefttLegMatrix = mat4(1);
 		AnakinGhostLefttLegMatrix = translate(AnakinGhostBodyMatrix, vec3(0.037731f, -0.18936f, -0.010731));
-		AnakinGhostLefttLegMatrix = rotate(AnakinGhostLefttLegMatrix, radians(rotLefLegAnakinG), vec3(1.0f, 0.0f, 0.0));
+		AnakinGhostLefttLegMatrix = rotate(AnakinGhostLefttLegMatrix, radians(rotLefTLegAnakinG), vec3(1.0f, 0.0f, 0.0));
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, value_ptr(AnakinGhostLefttLegMatrix));
 		AnakinGhostLeftLeg.Draw(lightingShader);
 		glDisable(GL_BLEND);
@@ -1789,7 +1802,7 @@ void animacion()
 			rotBodyXAnakinG += KeyFrameAnakinG[playIndexAnakin].incRotBodyXAnakinG;
 			rotBodyYAnakinG += KeyFrameAnakinG[playIndexAnakin].incRotBodyYAnakinG;
 
-			rotLefLegAnakinG += KeyFrameAnakinG[playIndexAnakin].incRotLefLegAnakinG;
+			rotLefTLegAnakinG += KeyFrameAnakinG[playIndexAnakin].incrotLefTLegAnakinG;
 			rotRightLegAnakinG += KeyFrameAnakinG[playIndexAnakin].incRotRightLegAnakinG;
 			rotLeftArmAnakinG += KeyFrameAnakinG[playIndexAnakin].incRotLeftArmAnakinG;
 			rotRightArmAnakinG += KeyFrameAnakinG[playIndexAnakin].incRotRightArmAnakinG;
@@ -1926,7 +1939,7 @@ void KeyCallback(GLFWwindow *window, int key, int scancode, int action, int mode
 
 	}
 
-	if (keys[GLFW_KEY_N])
+	if (keys[GLFW_KEY_M])
 	{
 		if (playSanta == false && (FrameIndexSanta > 1))
 		{
@@ -2059,9 +2072,9 @@ void DoMovement()
 	if (keys[GLFW_KEY_PAGE_DOWN])
 		rotBodyYAnakinG -= 1;
 	if (keys[GLFW_KEY_R])
-		rotLefLegAnakinG += 1;
+		rotLefTLegAnakinG += 1;
 	if (keys[GLFW_KEY_F])
-		rotLefLegAnakinG -= 1;
+		rotLefTLegAnakinG -= 1;
 	if (keys[GLFW_KEY_T])
 		rotRightLegAnakinG += 1;
 	if (keys[GLFW_KEY_G])

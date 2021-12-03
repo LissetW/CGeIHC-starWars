@@ -1,28 +1,29 @@
-﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(491,5): warning MSB8028: El directorio intermedio (Debug\) contiene archivos compartidos de otro proyecto (ProyectoFinalLaboratorioCGIHC.vcxproj). Esto puede dar lugar a un comportamiento incorrecto de limpieza y recompilación.
+﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(513,5): warning MSB8028: El directorio intermedio (Debug\) contiene archivos compartidos de otro proyecto (ProyectoFinalLaboratorioCGIHC.vcxproj). Esto puede dar lugar a un comportamiento incorrecto de limpieza y recompilación.
   417077701_PROYECTOFINAL_GPO12.cpp
-D:\2022-1\Lab. computación gráfica\CGeIHC-starWars\ProyectoFinal\ProyectoFinal\modelAnim.h(104,44): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
-D:\2022-1\Lab. computación gráfica\CGeIHC-starWars\ProyectoFinal\ProyectoFinal\modelAnim.h(519,24): warning C4244: 'inicializando': conversión de 'double' a 'float'; posible pérdida de datos
-D:\2022-1\Lab. computación gráfica\CGeIHC-starWars\ProyectoFinal\ProyectoFinal\417077701_PROYECTOFINAL_GPO12.cpp(757,2): warning C4305: 'inicializando': truncamiento de 'double' a 'float'
-D:\2022-1\Lab. computación gráfica\CGeIHC-starWars\ProyectoFinal\ProyectoFinal\417077701_PROYECTOFINAL_GPO12.cpp(1063,24): warning C4244: 'inicializando': conversión de 'double' a 'GLfloat'; posible pérdida de datos
-D:\2022-1\Lab. computación gráfica\CGeIHC-starWars\ProyectoFinal\ProyectoFinal\417077701_PROYECTOFINAL_GPO12.cpp(1223,21): warning C4018: '<': no coinciden signed/unsigned
-D:\2022-1\Lab. computación gráfica\CGeIHC-starWars\ProyectoFinal\ProyectoFinal\417077701_PROYECTOFINAL_GPO12.cpp(1233,21): warning C4018: '<': no coinciden signed/unsigned
-D:\2022-1\Lab. computación gráfica\CGeIHC-starWars\ProyectoFinal\ProyectoFinal\417077701_PROYECTOFINAL_GPO12.cpp(1244,21): warning C4018: '<': no coinciden signed/unsigned
-D:\2022-1\Lab. computación gráfica\CGeIHC-starWars\ProyectoFinal\ProyectoFinal\417077701_PROYECTOFINAL_GPO12.cpp(2022,11): warning C4244: '=': conversión de 'double' a 'GLfloat'; posible pérdida de datos
-D:\2022-1\Lab. computación gráfica\CGeIHC-starWars\ProyectoFinal\ProyectoFinal\417077701_PROYECTOFINAL_GPO12.cpp(2023,11): warning C4244: '=': conversión de 'double' a 'GLfloat'; posible pérdida de datos
-D:\2022-1\Lab. computación gráfica\CGeIHC-starWars\ProyectoFinal\ProyectoFinal\417077701_PROYECTOFINAL_GPO12.cpp(2027,18): warning C4244: 'inicializando': conversión de 'double' a 'GLfloat'; posible pérdida de datos
-D:\2022-1\Lab. computación gráfica\CGeIHC-starWars\ProyectoFinal\ProyectoFinal\417077701_PROYECTOFINAL_GPO12.cpp(2028,18): warning C4244: 'inicializando': conversión de 'double' a 'GLfloat'; posible pérdida de datos
-D:\2022-1\Lab. computación gráfica\CGeIHC-starWars\ProyectoFinal\ProyectoFinal\417077701_PROYECTOFINAL_GPO12.cpp(2030,10): warning C4244: '=': conversión de 'double' a 'GLfloat'; posible pérdida de datos
-D:\2022-1\Lab. computación gráfica\CGeIHC-starWars\ProyectoFinal\ProyectoFinal\417077701_PROYECTOFINAL_GPO12.cpp(2031,10): warning C4244: '=': conversión de 'double' a 'GLfloat'; posible pérdida de datos
-D:\2022-1\Lab. computación gráfica\CGeIHC-starWars\ProyectoFinal\ProyectoFinal\417077701_PROYECTOFINAL_GPO12.cpp(2042,22): warning C4305: '+=': truncamiento de 'double' a 'float'
-D:\2022-1\Lab. computación gráfica\CGeIHC-starWars\ProyectoFinal\ProyectoFinal\417077701_PROYECTOFINAL_GPO12.cpp(2044,22): warning C4305: '-=': truncamiento de 'double' a 'float'
-D:\2022-1\Lab. computación gráfica\CGeIHC-starWars\ProyectoFinal\ProyectoFinal\417077701_PROYECTOFINAL_GPO12.cpp(2046,22): warning C4305: '+=': truncamiento de 'double' a 'float'
-D:\2022-1\Lab. computación gráfica\CGeIHC-starWars\ProyectoFinal\ProyectoFinal\417077701_PROYECTOFINAL_GPO12.cpp(2048,22): warning C4305: '-=': truncamiento de 'double' a 'float'
-D:\2022-1\Lab. computación gráfica\CGeIHC-starWars\ProyectoFinal\ProyectoFinal\417077701_PROYECTOFINAL_GPO12.cpp(2050,22): warning C4305: '+=': truncamiento de 'double' a 'float'
-D:\2022-1\Lab. computación gráfica\CGeIHC-starWars\ProyectoFinal\ProyectoFinal\417077701_PROYECTOFINAL_GPO12.cpp(2052,22): warning C4305: '-=': truncamiento de 'double' a 'float'
-D:\2022-1\Lab. computación gráfica\CGeIHC-starWars\ProyectoFinal\ProyectoFinal\417077701_PROYECTOFINAL_GPO12.cpp(2083,20): warning C4305: '+=': truncamiento de 'double' a 'float'
-D:\2022-1\Lab. computación gráfica\CGeIHC-starWars\ProyectoFinal\ProyectoFinal\417077701_PROYECTOFINAL_GPO12.cpp(2085,20): warning C4305: '-=': truncamiento de 'double' a 'float'
-D:\2022-1\Lab. computación gráfica\CGeIHC-starWars\ProyectoFinal\ProyectoFinal\417077701_PROYECTOFINAL_GPO12.cpp(2087,20): warning C4305: '+=': truncamiento de 'double' a 'float'
-D:\2022-1\Lab. computación gráfica\CGeIHC-starWars\ProyectoFinal\ProyectoFinal\417077701_PROYECTOFINAL_GPO12.cpp(2089,20): warning C4305: '-=': truncamiento de 'double' a 'float'
-D:\2022-1\Lab. computación gráfica\CGeIHC-starWars\ProyectoFinal\ProyectoFinal\417077701_PROYECTOFINAL_GPO12.cpp(2091,20): warning C4305: '+=': truncamiento de 'double' a 'float'
-D:\2022-1\Lab. computación gráfica\CGeIHC-starWars\ProyectoFinal\ProyectoFinal\417077701_PROYECTOFINAL_GPO12.cpp(2093,20): warning C4305: '-=': truncamiento de 'double' a 'float'
-  ProyectoFinal.vcxproj -> D:\2022-1\Lab. computación gráfica\CGeIHC-starWars\ProyectoFinal\Debug\ProyectoFinal.exe
+C:\Users\franc\Desktop\LaboGráfica\CGeIHC-starWars\ProyectoFinal\ProyectoFinal\modelAnim.h(104,44): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\franc\Desktop\LaboGráfica\CGeIHC-starWars\ProyectoFinal\ProyectoFinal\modelAnim.h(519,24): warning C4244: 'inicializando': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\franc\Desktop\LaboGráfica\CGeIHC-starWars\ProyectoFinal\ProyectoFinal\417077701_PROYECTOFINAL_GPO12.cpp(758,2): warning C4305: 'inicializando': truncamiento de 'double' a 'float'
+C:\Users\franc\Desktop\LaboGráfica\CGeIHC-starWars\ProyectoFinal\ProyectoFinal\417077701_PROYECTOFINAL_GPO12.cpp(770,2): warning C4305: 'inicializando': truncamiento de 'double' a 'float'
+C:\Users\franc\Desktop\LaboGráfica\CGeIHC-starWars\ProyectoFinal\ProyectoFinal\417077701_PROYECTOFINAL_GPO12.cpp(1076,24): warning C4244: 'inicializando': conversión de 'double' a 'GLfloat'; posible pérdida de datos
+C:\Users\franc\Desktop\LaboGráfica\CGeIHC-starWars\ProyectoFinal\ProyectoFinal\417077701_PROYECTOFINAL_GPO12.cpp(1236,21): warning C4018: '<': no coinciden signed/unsigned
+C:\Users\franc\Desktop\LaboGráfica\CGeIHC-starWars\ProyectoFinal\ProyectoFinal\417077701_PROYECTOFINAL_GPO12.cpp(1246,21): warning C4018: '<': no coinciden signed/unsigned
+C:\Users\franc\Desktop\LaboGráfica\CGeIHC-starWars\ProyectoFinal\ProyectoFinal\417077701_PROYECTOFINAL_GPO12.cpp(1257,21): warning C4018: '<': no coinciden signed/unsigned
+C:\Users\franc\Desktop\LaboGráfica\CGeIHC-starWars\ProyectoFinal\ProyectoFinal\417077701_PROYECTOFINAL_GPO12.cpp(2035,11): warning C4244: '=': conversión de 'double' a 'GLfloat'; posible pérdida de datos
+C:\Users\franc\Desktop\LaboGráfica\CGeIHC-starWars\ProyectoFinal\ProyectoFinal\417077701_PROYECTOFINAL_GPO12.cpp(2036,11): warning C4244: '=': conversión de 'double' a 'GLfloat'; posible pérdida de datos
+C:\Users\franc\Desktop\LaboGráfica\CGeIHC-starWars\ProyectoFinal\ProyectoFinal\417077701_PROYECTOFINAL_GPO12.cpp(2040,18): warning C4244: 'inicializando': conversión de 'double' a 'GLfloat'; posible pérdida de datos
+C:\Users\franc\Desktop\LaboGráfica\CGeIHC-starWars\ProyectoFinal\ProyectoFinal\417077701_PROYECTOFINAL_GPO12.cpp(2041,18): warning C4244: 'inicializando': conversión de 'double' a 'GLfloat'; posible pérdida de datos
+C:\Users\franc\Desktop\LaboGráfica\CGeIHC-starWars\ProyectoFinal\ProyectoFinal\417077701_PROYECTOFINAL_GPO12.cpp(2043,10): warning C4244: '=': conversión de 'double' a 'GLfloat'; posible pérdida de datos
+C:\Users\franc\Desktop\LaboGráfica\CGeIHC-starWars\ProyectoFinal\ProyectoFinal\417077701_PROYECTOFINAL_GPO12.cpp(2044,10): warning C4244: '=': conversión de 'double' a 'GLfloat'; posible pérdida de datos
+C:\Users\franc\Desktop\LaboGráfica\CGeIHC-starWars\ProyectoFinal\ProyectoFinal\417077701_PROYECTOFINAL_GPO12.cpp(2055,22): warning C4305: '+=': truncamiento de 'double' a 'float'
+C:\Users\franc\Desktop\LaboGráfica\CGeIHC-starWars\ProyectoFinal\ProyectoFinal\417077701_PROYECTOFINAL_GPO12.cpp(2057,22): warning C4305: '-=': truncamiento de 'double' a 'float'
+C:\Users\franc\Desktop\LaboGráfica\CGeIHC-starWars\ProyectoFinal\ProyectoFinal\417077701_PROYECTOFINAL_GPO12.cpp(2059,22): warning C4305: '+=': truncamiento de 'double' a 'float'
+C:\Users\franc\Desktop\LaboGráfica\CGeIHC-starWars\ProyectoFinal\ProyectoFinal\417077701_PROYECTOFINAL_GPO12.cpp(2061,22): warning C4305: '-=': truncamiento de 'double' a 'float'
+C:\Users\franc\Desktop\LaboGráfica\CGeIHC-starWars\ProyectoFinal\ProyectoFinal\417077701_PROYECTOFINAL_GPO12.cpp(2063,22): warning C4305: '+=': truncamiento de 'double' a 'float'
+C:\Users\franc\Desktop\LaboGráfica\CGeIHC-starWars\ProyectoFinal\ProyectoFinal\417077701_PROYECTOFINAL_GPO12.cpp(2065,22): warning C4305: '-=': truncamiento de 'double' a 'float'
+C:\Users\franc\Desktop\LaboGráfica\CGeIHC-starWars\ProyectoFinal\ProyectoFinal\417077701_PROYECTOFINAL_GPO12.cpp(2096,20): warning C4305: '+=': truncamiento de 'double' a 'float'
+C:\Users\franc\Desktop\LaboGráfica\CGeIHC-starWars\ProyectoFinal\ProyectoFinal\417077701_PROYECTOFINAL_GPO12.cpp(2098,20): warning C4305: '-=': truncamiento de 'double' a 'float'
+C:\Users\franc\Desktop\LaboGráfica\CGeIHC-starWars\ProyectoFinal\ProyectoFinal\417077701_PROYECTOFINAL_GPO12.cpp(2100,20): warning C4305: '+=': truncamiento de 'double' a 'float'
+C:\Users\franc\Desktop\LaboGráfica\CGeIHC-starWars\ProyectoFinal\ProyectoFinal\417077701_PROYECTOFINAL_GPO12.cpp(2102,20): warning C4305: '-=': truncamiento de 'double' a 'float'
+C:\Users\franc\Desktop\LaboGráfica\CGeIHC-starWars\ProyectoFinal\ProyectoFinal\417077701_PROYECTOFINAL_GPO12.cpp(2104,20): warning C4305: '+=': truncamiento de 'double' a 'float'
+C:\Users\franc\Desktop\LaboGráfica\CGeIHC-starWars\ProyectoFinal\ProyectoFinal\417077701_PROYECTOFINAL_GPO12.cpp(2106,20): warning C4305: '-=': truncamiento de 'double' a 'float'
+  ProyectoFinal.vcxproj -> C:\Users\franc\Desktop\LaboGráfica\CGeIHC-starWars\ProyectoFinal\Debug\ProyectoFinal.exe
