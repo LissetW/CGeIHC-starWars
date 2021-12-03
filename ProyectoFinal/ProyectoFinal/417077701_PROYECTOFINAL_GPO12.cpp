@@ -42,7 +42,7 @@ const GLuint WIDTH = 800, HEIGHT = 600;
 int SCREEN_WIDTH, SCREEN_HEIGHT;
 
 // Camera
-Camera  camera(glm::vec3(0.0f, 0.5f, 0.0f));
+Camera  camera(vec3(0.0f, 0.5f, 0.0f));
 GLfloat lastX = WIDTH / 2.0;
 GLfloat lastY = HEIGHT / 2.0;
 bool keys[1024];
@@ -52,14 +52,290 @@ float rot = 0.0f;
 
 
 // Light attributes
-glm::vec3 lightPos(0.0f, 0.0f, 0.0f);
+vec3 lightPos(0.0f, 0.0f, 0.0f);
 //Posicion inicial del monito k frames
-glm::vec3 PosIni(2.4544f, 0.23264f, 6.2022f);
-glm::vec3 lightDirection(0.0f, -1.0f, -1.0f);
+vec3 PosIni(2.4544f, 0.23264f, 6.2022f);
+vec3 lightDirection(0.0f, -1.0f, -1.0f);
 
 bool active;
 
+//Variables para todos los frames
+int i_max_steps = 95;
+int i_curr_steps = 0;
 
+/************************************
+*									*
+* VARIABLES KEYFRAMES ANAKIN GHOST	*
+*									*
+*************************************/
+// Posicion incial anakin
+vec3 PosIniAnakinG(1.4433f, 0.3221f, -2.2851f);
+int i_curr_stepsAnakin = 0;
+
+//Inicializo los valores de k frames
+float posXAnakinG{ PosIniAnakinG.x },
+	  posYAnakinG{ PosIniAnakinG.y },
+	  posZAnakinG{ PosIniAnakinG.z },
+	  rotBodyYAnakinG{ 33.9f },
+	  rotBodyXAnakinG{ 0.0f },
+	  rotLefLegAnakinG{ 0.0f },
+	  rotRightLegAnakinG{ 0.0f },
+	  rotLeftArmAnakinG{ 0.0f },
+	  rotRightArmAnakinG{ 0.0f },
+	  rotRightWristAnakinG{ 0.0f },
+	  rotLeftWristAnakinG{ 0.0f };
+
+#define MAX_FRAMES_ANAKING 9
+
+typedef struct _frameAnakin
+{
+	//Variables para GUARDAR Key Frames
+	float posXAnakinG,
+		  posYAnakinG,
+		  posZAnakinG,
+		  rotBodyXAnakinG,
+		  rotBodyYAnakinG,
+		  rotLefLegAnakinG,
+		  rotRightLegAnakinG,
+		  rotLeftArmAnakinG,
+		  rotRightArmAnakinG,
+		  rotRightWristAnakinG,
+		  rotLeftWristAnakinG;
+	//Incrementos
+	float incPosXAnakinG,
+		  incPosYAnakinG,
+		  incPosZAnakinG,
+		  incRotBodyXAnakinG,
+		  incRotBodyYAnakinG,
+		  incRotLefLegAnakinG,
+		  incRotRightLegAnakinG,
+		  incRotLeftArmAnakinG,
+		  incRotRightArmAnakinG,
+		  incRotRightWristAnakinG,
+		  incRotLeftWristAnakinG;
+
+}FRAME_ANAKIN;
+
+FRAME_ANAKIN KeyFrameAnakinG[MAX_FRAMES_ANAKING];
+int FrameIndexAnakin = 0;			//introducir datos
+bool playAnakin = false;
+int playIndexAnakin = 0;
+
+/************************************
+*									*
+* FUNCIONES KEYFRAMES ANAKIN GHOST	*
+*									*
+*************************************/
+
+void saveFrameAnakin(void)
+{
+	KeyFrameAnakinG[FrameIndexAnakin].posXAnakinG = posXAnakinG;
+	KeyFrameAnakinG[FrameIndexAnakin].posYAnakinG = posYAnakinG;
+	KeyFrameAnakinG[FrameIndexAnakin].posZAnakinG = posZAnakinG;
+
+	KeyFrameAnakinG[FrameIndexAnakin].rotBodyXAnakinG = rotBodyXAnakinG;
+	KeyFrameAnakinG[FrameIndexAnakin].rotBodyYAnakinG = rotBodyYAnakinG;
+
+	KeyFrameAnakinG[FrameIndexAnakin].rotLefLegAnakinG = rotLefLegAnakinG;
+	KeyFrameAnakinG[FrameIndexAnakin].rotRightLegAnakinG = rotRightLegAnakinG;
+	KeyFrameAnakinG[FrameIndexAnakin].rotLeftArmAnakinG = rotLeftArmAnakinG;
+	KeyFrameAnakinG[FrameIndexAnakin].rotRightArmAnakinG = rotRightArmAnakinG;
+	KeyFrameAnakinG[FrameIndexAnakin].rotRightWristAnakinG = rotRightWristAnakinG;
+	KeyFrameAnakinG[FrameIndexAnakin].rotLeftWristAnakinG = rotLeftWristAnakinG;
+
+	cout << "******************************\n"
+		<< "   FRAME INDEX:" << FrameIndexAnakin << endl
+		<< "******************************\n"
+		<< "posXAnakinG: " << posXAnakinG << endl
+		<< "posYAnakinG: " << posYAnakinG << endl
+		<< "posZAnakinG: " << posZAnakinG << endl
+		<< "rotBodyXAnakinG: " << rotBodyXAnakinG << endl
+		<< "rotBodyYAnakinG: " << rotBodyYAnakinG << endl
+		<< "rotLefLegAnakinG: " << rotLefLegAnakinG << endl
+		<< "rotRihtLegAnakinG: " << rotRightLegAnakinG << endl
+		<< "rotLeftArmAnakinG: " << rotLeftArmAnakinG << endl
+		<< "rotRightArmAnakinG: " << rotRightArmAnakinG << endl
+		<< "rotRightWristAnakinG: " << rotRightWristAnakinG << endl
+		<< "rotLeftWristAnakinG: " << rotLeftWristAnakinG << endl
+		<< "{" << posXAnakinG << ", " << posYAnakinG << ", " << posZAnakinG << ", "
+		<< rotBodyXAnakinG << ", " << rotBodyYAnakinG << ", "
+		<< rotLefLegAnakinG << ", " << rotRightLegAnakinG << ", " << rotLeftArmAnakinG << ", " << rotRightArmAnakinG 
+		<< rotRightWristAnakinG << ", " << rotLeftWristAnakinG << "}"
+		<< "\n" << endl;
+	FrameIndexAnakin++;
+}
+//para resetear las variables que manejan los frames
+void resetElementsAnakin(void)
+{
+	posXAnakinG = KeyFrameAnakinG[0].posXAnakinG;
+	posYAnakinG = KeyFrameAnakinG[0].posYAnakinG;
+	posZAnakinG = KeyFrameAnakinG[0].posZAnakinG;
+
+	rotBodyXAnakinG = KeyFrameAnakinG[0].rotBodyXAnakinG;
+	rotBodyYAnakinG = KeyFrameAnakinG[0].rotBodyYAnakinG;
+
+	rotLefLegAnakinG = KeyFrameAnakinG[0].rotLefLegAnakinG;
+	rotRightLegAnakinG = KeyFrameAnakinG[0].rotRightLegAnakinG;
+	rotLeftArmAnakinG = KeyFrameAnakinG[0].rotLeftArmAnakinG;
+	rotRightArmAnakinG = KeyFrameAnakinG[0].rotRightArmAnakinG;
+	rotRightWristAnakinG = KeyFrameAnakinG[0].rotRightWristAnakinG;
+	rotLeftWristAnakinG = KeyFrameAnakinG[0].rotLeftWristAnakinG;
+
+}
+
+void interpolationAnakin(void)
+{
+	
+	KeyFrameAnakinG[playIndexAnakin].incPosXAnakinG = (KeyFrameAnakinG[playIndexAnakin + 1].posXAnakinG - KeyFrameAnakinG[playIndexAnakin].posXAnakinG) / i_max_steps;
+	KeyFrameAnakinG[playIndexAnakin].incPosYAnakinG = (KeyFrameAnakinG[playIndexAnakin + 1].posYAnakinG - KeyFrameAnakinG[playIndexAnakin].posYAnakinG) / i_max_steps;
+	KeyFrameAnakinG[playIndexAnakin].incPosZAnakinG = (KeyFrameAnakinG[playIndexAnakin + 1].posZAnakinG - KeyFrameAnakinG[playIndexAnakin].posZAnakinG) / i_max_steps;
+
+	KeyFrameAnakinG[playIndexAnakin].incRotBodyXAnakinG = (KeyFrameAnakinG[playIndexAnakin + 1].rotBodyXAnakinG - KeyFrameAnakinG[playIndexAnakin].rotBodyXAnakinG) / i_max_steps;
+	KeyFrameAnakinG[playIndexAnakin].incRotBodyYAnakinG = (KeyFrameAnakinG[playIndexAnakin + 1].rotBodyYAnakinG - KeyFrameAnakinG[playIndexAnakin].rotBodyYAnakinG) / i_max_steps;
+
+	KeyFrameAnakinG[playIndexAnakin].incRotLefLegAnakinG = (KeyFrameAnakinG[playIndexAnakin + 1].rotLefLegAnakinG - KeyFrameAnakinG[playIndexAnakin].rotLefLegAnakinG) / i_max_steps;
+	KeyFrameAnakinG[playIndexAnakin].incRotRightLegAnakinG = (KeyFrameAnakinG[playIndexAnakin + 1].rotRightLegAnakinG - KeyFrameAnakinG[playIndexAnakin].rotRightLegAnakinG) / i_max_steps;
+	KeyFrameAnakinG[playIndexAnakin].incRotLeftArmAnakinG = (KeyFrameAnakinG[playIndexAnakin + 1].rotLeftArmAnakinG - KeyFrameAnakinG[playIndexAnakin].rotLeftArmAnakinG) / i_max_steps;
+	KeyFrameAnakinG[playIndexAnakin].incRotRightWristAnakinG = (KeyFrameAnakinG[playIndexAnakin + 1].rotRightWristAnakinG - KeyFrameAnakinG[playIndexAnakin].rotRightWristAnakinG) / i_max_steps;
+	KeyFrameAnakinG[playIndexAnakin].incRotLeftWristAnakinG = (KeyFrameAnakinG[playIndexAnakin + 1].rotLeftWristAnakinG - KeyFrameAnakinG[playIndexAnakin].rotLeftWristAnakinG) / i_max_steps;
+
+
+}
+
+
+/************************************
+*									*
+* VARIABLES KEYFRAMES SANTA CLAUS	*
+*									*
+*************************************/
+// Posicion incial Santa
+vec3 PosIniSanta(1.827f, 0.24312f, -1.662f);
+//rotacion inical santa
+int i_curr_stepsSanta = 0;
+//Inicializo los valores de k frames
+float posXSanta{ PosIniSanta.x },
+posYSanta{ PosIniSanta.y },
+posZSanta{ PosIniSanta.z },
+rotBodyYSanta{ -143.0f },
+rotBodyXSanta{ 0.0f },
+rotLeftLegSanta{ 0.0f },
+rotRightLegSanta{ 0.0f },
+rotLeftArmSanta{ 0.0f },
+rotRightArmSanta{ 0.0f },
+rotRightWristSanta{ 0.0f };
+
+#define MAX_FRAMES_SANTA 9
+
+typedef struct _frameSanta
+{
+	//Variables para GUARDAR Key Frames
+	float posXSanta,
+		  posYSanta,
+		  posZSanta,
+		  rotBodyXSanta,
+		  rotBodyYSanta,
+		  rotLeftLegSanta,
+		  rotRightLegSanta,
+		  rotLeftArmSanta,
+		  rotRightArmSanta,
+		  rotRightWristSanta;
+	//Incrementos
+	float incPosXSanta,
+		  incPosYSanta,
+		  incPosZSanta,
+		  incRotBodyXSanta,
+		  incRotBodyYSanta,
+		  incrotLeftLegSanta,
+		  incRotRightLegSanta,
+		  incRotLeftArmSanta,
+		  incRotRightArmSanta,
+		  incRotRightWristSanta;
+
+}FRAME_SANTA;
+
+FRAME_SANTA KeyFrameSanta[MAX_FRAMES_SANTA];
+int FrameIndexSanta = 0;			//introducir datos
+bool playSanta = false;
+int playIndexSanta = 0;
+
+/************************************
+*									*
+* FUNCIONES KEYFRAMES Santa GHOST	*
+*									*
+*************************************/
+
+void saveFrameSanta(void)
+{
+	KeyFrameSanta[FrameIndexSanta].posXSanta = posXSanta;
+	KeyFrameSanta[FrameIndexSanta].posYSanta = posYSanta;
+	KeyFrameSanta[FrameIndexSanta].posZSanta = posZSanta;
+
+	KeyFrameSanta[FrameIndexSanta].rotBodyXSanta = rotBodyXSanta;
+	KeyFrameSanta[FrameIndexSanta].rotBodyYSanta = rotBodyYSanta;
+
+	KeyFrameSanta[FrameIndexSanta].rotLeftLegSanta = rotLeftLegSanta;
+	KeyFrameSanta[FrameIndexSanta].rotRightLegSanta = rotRightLegSanta;
+	KeyFrameSanta[FrameIndexSanta].rotLeftArmSanta = rotLeftArmSanta;
+	KeyFrameSanta[FrameIndexSanta].rotRightArmSanta = rotRightArmSanta;
+	KeyFrameSanta[FrameIndexSanta].rotRightWristSanta = rotRightWristSanta;
+
+	cout << "******************************\n"
+		<< "     FRAME INDEX:" << FrameIndexSanta << endl
+		<< "******************************\n"
+		<< "posXSanta: " << posXSanta << endl
+		<< "posYSanta: " << posYSanta << endl
+		<< "posZSanta: " << posZSanta << endl
+		<< "rotBodyXSanta: " << rotBodyXSanta << endl
+		<< "rotBodyYSanta: " << rotBodyYSanta << endl
+		<< "rotLeftLegSanta: " << rotLeftLegSanta << endl
+		<< "rotRightLegSanta: " << rotRightLegSanta << endl
+		<< "rotLeftArmSanta: " << rotLeftArmSanta << endl
+		<< "rotRightArmSanta: " << rotRightArmSanta << endl
+		<< "rotRightWristSanta: " << rotRightWristSanta << endl
+		<< "{" << posXSanta << ", " << posYSanta << ", " << posZSanta << ", "
+		<< rotBodyXSanta << ", "  << rotBodyYSanta << ", "
+		<< rotLeftLegSanta << ", " << rotRightLegSanta << ", " << rotLeftArmSanta << ", " << rotRightArmSanta << rotRightWristSanta << "}"
+		<< "\n" << endl;
+	
+	FrameIndexSanta++;
+}
+//para resetear las variables que manejan los frames
+void resetElementsSanta(void)
+{
+	posXSanta = KeyFrameSanta[0].posXSanta;
+	posYSanta = KeyFrameSanta[0].posYSanta;
+	posZSanta = KeyFrameSanta[0].posZSanta;
+
+	rotBodyXSanta = KeyFrameSanta[0].rotBodyXSanta;
+	rotBodyYSanta = KeyFrameSanta[0].rotBodyYSanta;
+
+	rotLeftLegSanta = KeyFrameSanta[0].rotLeftLegSanta;
+	rotRightLegSanta = KeyFrameSanta[0].rotRightLegSanta;
+	rotLeftArmSanta = KeyFrameSanta[0].rotLeftArmSanta;
+	rotRightArmSanta = KeyFrameSanta[0].rotRightArmSanta;
+	rotRightWristSanta = KeyFrameSanta[0].rotRightWristSanta;
+
+
+}
+
+void interpolationSanta(void)
+{
+
+	KeyFrameSanta[playIndexSanta].incPosXSanta = (KeyFrameSanta[playIndexSanta + 1].posXSanta - KeyFrameSanta[playIndexSanta].posXSanta) / i_max_steps;
+	KeyFrameSanta[playIndexSanta].incPosYSanta = (KeyFrameSanta[playIndexSanta + 1].posYSanta - KeyFrameSanta[playIndexSanta].posYSanta) / i_max_steps;
+	KeyFrameSanta[playIndexSanta].incPosZSanta = (KeyFrameSanta[playIndexSanta + 1].posZSanta - KeyFrameSanta[playIndexSanta].posZSanta) / i_max_steps;
+
+	KeyFrameSanta[playIndexSanta].incRotBodyXSanta = (KeyFrameSanta[playIndexSanta + 1].rotBodyXSanta - KeyFrameSanta[playIndexSanta].rotBodyXSanta) / i_max_steps;
+	KeyFrameSanta[playIndexSanta].incRotBodyYSanta = (KeyFrameSanta[playIndexSanta + 1].rotBodyYSanta - KeyFrameSanta[playIndexSanta].rotBodyYSanta) / i_max_steps;
+
+	KeyFrameSanta[playIndexSanta].incrotLeftLegSanta = (KeyFrameSanta[playIndexSanta + 1].rotLeftLegSanta - KeyFrameSanta[playIndexSanta].rotLeftLegSanta) / i_max_steps;
+	KeyFrameSanta[playIndexSanta].incRotRightLegSanta = (KeyFrameSanta[playIndexSanta + 1].rotRightLegSanta - KeyFrameSanta[playIndexSanta].rotRightLegSanta) / i_max_steps;
+	KeyFrameSanta[playIndexSanta].incRotLeftArmSanta = (KeyFrameSanta[playIndexSanta + 1].rotLeftArmSanta - KeyFrameSanta[playIndexSanta].rotLeftArmSanta) / i_max_steps;
+	KeyFrameSanta[playIndexSanta].incRotRightArmSanta = (KeyFrameSanta[playIndexSanta + 1].rotRightArmSanta - KeyFrameSanta[playIndexSanta].rotRightArmSanta) / i_max_steps;
+	KeyFrameSanta[playIndexSanta].incRotRightWristSanta = (KeyFrameSanta[playIndexSanta + 1].rotRightWristSanta - KeyFrameSanta[playIndexSanta].rotRightWristSanta) / i_max_steps;
+
+
+}
 // Deltatime
 GLfloat deltaTime = 0.0f;	// Time between current frame and last frame
 GLfloat lastFrame = 0.0f;  	// Time of last frame
@@ -69,9 +345,8 @@ GLfloat lastFrame = 0.0f;  	// Time of last frame
 float posX =PosIni.x, posY = PosIni.y, posZ = PosIni.z,rotY=90, rotPataFder = 0, rotPataTder = 0, 
 rotPataFizq = 0, rotPataTizq = 0;
 
+
 #define MAX_FRAMES 9
-int i_max_steps = 190;
-int i_curr_steps = 0;
 typedef struct _frame
 {
 	//Variables para GUARDAR Key Frames
@@ -100,14 +375,14 @@ bool play = false;
 int playIndex = 0;
 
 // Positions of the point lights
-glm::vec3 pointLightPositions[] = {
-	glm::vec3(posX,posY,posZ),
-	glm::vec3(-10.0,-10.0,-10.0),
-	glm::vec3(-10.0,-10.0,-10.0),
-	glm::vec3(-10.0,-10.0,-10.0),
+vec3 pointLightPositions[] = {
+	vec3(posX,posY,posZ),
+	vec3(-10.0,-10.0,-10.0),
+	vec3(-10.0,-10.0,-10.0),
+	vec3(-10.0,-10.0,-10.0),
 };
 
-glm::vec3 LightP1;
+vec3 LightP1;
 
 
 
@@ -178,7 +453,7 @@ void drawInPosition(vec3 position, Model Object, GLuint VAO, Shader shader, vec3
 	model = rotate(model, radians(rotation.z), vec3(0.0f, 0.0f, 1.0f));
 	glBindVertexArray(VAO);
 	GLint modelLoc = glGetUniformLocation(shader.Program, "model");
-	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, value_ptr(model));
 	Object.Draw(shader);
 }
 
@@ -191,7 +466,7 @@ void drawFromPivot(vec3 position, Model Object, GLuint VAO, Shader shader, mat4 
 	model = rotate(model, radians(rotation.z), vec3(0.0f, 0.0f, 1.0f));
 	glBindVertexArray(VAO);
 	GLint modelLoc = glGetUniformLocation(shader.Program, "model");
-	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, value_ptr(model));
 	Object.Draw(shader);
 }
 
@@ -203,7 +478,7 @@ void drawTableTwoObjects(vec3 position, GLuint VAO, Shader shader, Model Object,
 	modelMesa = rotate(modelMesa, radians(orientation), vec3(0.0f, 1.0f, 0.0f));
 	glBindVertexArray(VAO);
 	GLint modelLoc = glGetUniformLocation(shader.Program, "model");
-	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(modelMesa));
+	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, value_ptr(modelMesa));
 	Table.Draw(shader);
 
 	//Object 1
@@ -266,7 +541,6 @@ int main()
 	// Set the required callback functions
 	glfwSetKeyCallback(window, KeyCallback);
 	glfwSetCursorPosCallback(window, MouseCallback);
-	printf("%f", glfwGetTime());
 
 	// GLFW Options
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
@@ -384,8 +658,22 @@ int main()
 	Model Chewbaca((char*)"Models/LegoStarWarsTCSModels/Characters/Chewbaca/Chewbaca.obj");
 
 	//Fantasma anakin
-	Model AnakinGhost((char*)"Models/LegoStarWarsTCSModels/Characters/AnakinGhost/AnakinGhost.obj");
+	Model AnakinGhostBody((char*)"Models/LegoStarWarsTCSModels/Characters/AnakinGhost/anakinGhostLightSaberBody.obj");
+	Model AnakinGhostLeftArm((char*)"Models/LegoStarWarsTCSModels/Characters/AnakinGhost/anakinGhostLightSaberLeftArm.obj");
+	Model AnakinGhostRightArm((char*)"Models/LegoStarWarsTCSModels/Characters/AnakinGhost/anakinGhostLightSaberRightArm.obj");
+	Model AnakinGhostLeftHand((char*)"Models/LegoStarWarsTCSModels/Characters/AnakinGhost/anakinGhostLightSaberLeftHand.obj");
+	Model AnakinGhostLightSaber((char*)"Models/LegoStarWarsTCSModels/Characters/AnakinGhost/anakinGhostLightSaberBlue.obj");
+	Model AnakinGhostRightHand((char*)"Models/LegoStarWarsTCSModels/Characters/AnakinGhost/anakinGhostLightSaberRightHand.obj");
+	Model AnakinGhostRightLeg((char*)"Models/LegoStarWarsTCSModels/Characters/AnakinGhost/anakinGhostLightSaberRightLeg.obj");
+	Model AnakinGhostLeftLeg((char*)"Models/LegoStarWarsTCSModels/Characters/AnakinGhost/anakinGhostLightSaberLeftLeg.obj");
 
+	// Santa Claus
+	Model SantaClausBody((char*)"Models/LegoStarWarsTCSModels/Characters/SantaClaus/SantaBody.obj");
+	Model SantaClausRightArm((char*)"Models/LegoStarWarsTCSModels/Characters/SantaClaus/SantaRightArm.obj");
+	Model SantaClausRightHand((char*)"Models/LegoStarWarsTCSModels/Characters/SantaClaus/SantaRightHand.obj");
+	Model SantaClausLeftArm((char*)"Models/LegoStarWarsTCSModels/Characters/SantaClaus/SantaLeftArm.obj");
+	Model SantaClausLeftLeg((char*)"Models/LegoStarWarsTCSModels/Characters/SantaClaus/SantaLeftLeg.obj");
+	Model SantaClausRightLeg((char*)"Models/LegoStarWarsTCSModels/Characters/SantaClaus/SantaRightLeg.obj");
 
 	/*********************************
 			Elementos del entorno
@@ -447,6 +735,18 @@ int main()
 		{6.05441f,0.23264f,1.90208f,-0.0f,34.0f,-8.0f,33.0f,169.997f},
 		{6.05441f,0.23264f,0.9020082f,-44.0f,23.0f,-33.0f,-7.0f,169.997f},
 	};
+
+	float animAnakin[MAX_FRAMES_ANAKING][10] = {
+		{1.1433, 0.3221, -2.6351, 0, 33.9, -4, -29,  37, 0, 67},
+		{1.4933, 0.3221, -2.2851, 0, 33.9, 30, -29,  56, 0, 52},
+		{1.727,  0.29312, -1.862, 0, -120, 12,  -8, -30, 53,33},
+		{1.6433, 0.3221,  -2.1851,0, 72.9, 25, -29, 31, 0, 33},
+		{1.64329, 0.3221, -2.18509, 0, 12.9001, 25, -58, 43, 0,-14.0001},
+		{1.74327, 0.8221, -1.7351, 66, 9.90043, -46.0001, -101, 37, 0, -23.0003},
+		{1.89327, 0.8221, -1.6351, 48, -154.1, -26.0001, -85.0001, 37, 0, -23.0003},
+		{1.99327, 0.3221, -1.5351, 4, -154.1, -11.0001, -47.0001, 16, 0, -86.0003},
+		{1.99327, 0.3221, -1.5351, 1, -205.1, -11.0001, -47.0001, 16, 0, -86.0003}
+	};
 	//Inicialización de KeyFrames
 	//aqui se cargan
 	for(int i=0; i<MAX_FRAMES; i++)
@@ -471,9 +771,65 @@ int main()
 		KeyFrame[i].incRotPataTizq = 0;
 		KeyFrame[i].incRotY = 0;
 	}
+	//Inicialización de KeyFrames Anakin
+	for (int i = 0; i < MAX_FRAMES_ANAKING; i++)
+	{
+		KeyFrameAnakinG[i].posXAnakinG = 0.0f;
+		KeyFrameAnakinG[i].posYAnakinG = 0.0f;
+		KeyFrameAnakinG[i].posZAnakinG = 0.0f;
+
+		KeyFrameAnakinG[i].rotBodyXAnakinG = 0.0f;
+		KeyFrameAnakinG[i].rotBodyYAnakinG = 0.0f;
+
+		KeyFrameAnakinG[i].rotLefLegAnakinG = 0.0f;
+		KeyFrameAnakinG[i].rotRightLegAnakinG = 0.0f;
+		KeyFrameAnakinG[i].rotLeftArmAnakinG = 0.0f;
+		KeyFrameAnakinG[i].rotRightArmAnakinG = 0.0f;
+		KeyFrameAnakinG[i].rotRightWristAnakinG = 0.0f;
+		KeyFrameAnakinG[i].rotLeftWristAnakinG = 0.0f;
+
+		KeyFrameAnakinG[i].incPosXAnakinG = 0.0f;
+		KeyFrameAnakinG[i].incPosYAnakinG = 0.0f;
+		KeyFrameAnakinG[i].incPosZAnakinG = 0.0f;
+
+		KeyFrameAnakinG[i].incRotBodyXAnakinG = 0.0f;
+		KeyFrameAnakinG[i].incRotBodyYAnakinG = 0.0f;
+		KeyFrameAnakinG[i].incRotLefLegAnakinG = 0.0f;
+		KeyFrameAnakinG[i].incRotLeftArmAnakinG = 0.0f;
+		KeyFrameAnakinG[i].incRotRightWristAnakinG = 0.0f;
+		KeyFrameAnakinG[i].incRotLeftWristAnakinG = 0.0f;
 
 
+	}
+	
+	//Inicialización de KeyFrames Santa
+	for (int i = 0; i < MAX_FRAMES_SANTA; i++)
+	{
+		KeyFrameSanta[i].posXSanta = 0.0f;
+		KeyFrameSanta[i].posYSanta = 0.0f;
+		KeyFrameSanta[i].posZSanta = 0.0f;
 
+		KeyFrameSanta[i].rotBodyXSanta = 0.0f;
+		KeyFrameSanta[i].rotBodyYSanta = 0.0f;
+
+		KeyFrameSanta[i].rotLeftLegSanta = 0.0f;
+		KeyFrameSanta[i].rotRightLegSanta = 0.0f;
+		KeyFrameSanta[i].rotLeftArmSanta = 0.0f;
+		KeyFrameSanta[i].rotRightArmSanta = 0.0f;
+		KeyFrameSanta[i].rotRightWristSanta = 0.0f;
+
+		KeyFrameSanta[i].incPosXSanta = 0.0f;
+		KeyFrameSanta[i].incPosYSanta = 0.0f;
+		KeyFrameSanta[i].incPosZSanta = 0.0f;
+
+		KeyFrameSanta[i].incRotBodyXSanta = 0.0f;
+		KeyFrameSanta[i].incRotBodyYSanta = 0.0f;
+		KeyFrameSanta[i].incrotLeftLegSanta = 0.0f;
+		KeyFrameSanta[i].incRotLeftArmSanta = 0.0f;
+		KeyFrameSanta[i].incRotRightWristSanta = 0.0f;
+
+
+	}
 	// Set up vertex data (and buffer(s)) and attribute pointers
 	GLfloat vertices[] =
 	{
@@ -582,17 +938,17 @@ int main()
 	};
 
 	// Positions all containers
-	glm::vec3 cubePositions[] = {
-		glm::vec3(0.0f,  0.0f,  0.0f),
-		glm::vec3(2.0f,  5.0f, -15.0f),
-		glm::vec3(-1.5f, -2.2f, -2.5f),
-		glm::vec3(-3.8f, -2.0f, -12.3f),
-		glm::vec3(2.4f, -0.4f, -3.5f),
-		glm::vec3(-1.7f,  3.0f, -7.5f),
-		glm::vec3(1.3f, -2.0f, -2.5f),
-		glm::vec3(1.5f,  2.0f, -2.5f),
-		glm::vec3(1.5f,  0.2f, -1.5f),
-		glm::vec3(-1.3f,  1.0f, -1.5f)
+	vec3 cubePositions[] = {
+		vec3(0.0f,  0.0f,  0.0f),
+		vec3(2.0f,  5.0f, -15.0f),
+		vec3(-1.5f, -2.2f, -2.5f),
+		vec3(-3.8f, -2.0f, -12.3f),
+		vec3(2.4f, -0.4f, -3.5f),
+		vec3(-1.7f,  3.0f, -7.5f),
+		vec3(1.3f, -2.0f, -2.5f),
+		vec3(1.5f,  2.0f, -2.5f),
+		vec3(1.5f,  0.2f, -1.5f),
+		vec3(-1.3f,  1.0f, -1.5f)
 	};
 
 	//Posiciones de los bancos
@@ -689,7 +1045,7 @@ int main()
 	
 	GLuint cubemapTexture = TextureLoading::LoadCubemap(faces);
 
-	glm::mat4 projection = glm::perspective(camera.GetZoom(), (GLfloat)SCREEN_WIDTH / (GLfloat)SCREEN_HEIGHT, 0.1f, 1000.0f);
+	mat4 projection = perspective(camera.GetZoom(), (GLfloat)SCREEN_WIDTH / (GLfloat)SCREEN_HEIGHT, 0.1f, 1000.0f);
 
 	// Game loop
 	while (!glfwWindowShouldClose(window))
@@ -777,14 +1133,14 @@ int main()
 		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight.constant"), 1.0f);
 		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight.linear"), 0.09f);
 		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight.quadratic"), 0.032f);
-		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight.cutOff"), glm::cos(glm::radians(12.5f)));
-		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight.outerCutOff"), glm::cos(glm::radians(15.0f)));
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight.cutOff"), cos(radians(12.5f)));
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight.outerCutOff"), cos(radians(15.0f)));
 
 		// Set material properties
 		glUniform1f(glGetUniformLocation(lightingShader.Program, "material.shininess"), 32.0f);
 
 		// Create camera transformations
-		glm::mat4 view;
+		mat4 view;
 		view = camera.GetViewMatrix();
 
 
@@ -794,8 +1150,8 @@ int main()
 		GLint projLoc = glGetUniformLocation(lightingShader.Program, "projection");
 
 		// Pass the matrices to the shader
-		glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
-		glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
+		glUniformMatrix4fv(viewLoc, 1, GL_FALSE, value_ptr(view));
+		glUniformMatrix4fv(projLoc, 1, GL_FALSE, value_ptr(projection));
 
 		// Bind diffuse map
 		//glBindTexture(GL_TEXTURE_2D, texture1);*/
@@ -806,7 +1162,7 @@ int main()
 
 
 		glBindVertexArray(VAO);
-		glm::mat4 tmp = glm::mat4(1.0f); //Temp
+		mat4 tmp = mat4(1.0f); //Temp
 
 
 		/*********************************
@@ -817,40 +1173,40 @@ int main()
 		//Dewback
 		mat4 model(1);
 		mat4 DewbackBodyMatrix = model;
-		DewbackBodyMatrix = translate(DewbackBodyMatrix, glm::vec3(posX, posY, posZ));
-		DewbackBodyMatrix = rotate(DewbackBodyMatrix, glm::radians(rotY), glm::vec3(0.0f, 1.0f, 0.0));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(DewbackBodyMatrix));
+		DewbackBodyMatrix = translate(DewbackBodyMatrix, vec3(posX, posY, posZ));
+		DewbackBodyMatrix = rotate(DewbackBodyMatrix, radians(rotY), vec3(0.0f, 1.0f, 0.0));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, value_ptr(DewbackBodyMatrix));
 		DewbackBody.Draw(lightingShader);
 
 
 		////Pierna frontal derecha
-		model = translate(DewbackBodyMatrix, glm::vec3(-0.15935f, 0.013264f, 0.43353f));
-		model = rotate(model, glm::radians(rotPataFder), glm::vec3(1.0f, 0.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		model = translate(DewbackBodyMatrix, vec3(-0.15935f, 0.013264f, 0.43353f));
+		model = rotate(model, radians(rotPataFder), vec3(1.0f, 0.0f, 0.0f));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, value_ptr(model));
 		DewbackFRightLeg.Draw(lightingShader);
 
 		////Pierna frontal izquierda
-		model = translate(DewbackBodyMatrix, glm::vec3(0.13065f, 0.003264f, 0.44353f));
-		model = rotate(model, glm::radians(rotPataFizq), glm::vec3(1.0f, 0.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		model = translate(DewbackBodyMatrix, vec3(0.13065f, 0.003264f, 0.44353f));
+		model = rotate(model, radians(rotPataFizq), vec3(1.0f, 0.0f, 0.0f));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, value_ptr(model));
 		DewbackFLeftLeg.Draw(lightingShader);
 
 		////Pierna trasera derecha
-		model = translate(DewbackBodyMatrix, glm::vec3(-0.15935f, -0.006736f, -0.046474f));
-		model = rotate(model, glm::radians(rotPataTder), glm::vec3(1.0f, 0.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		model = translate(DewbackBodyMatrix, vec3(-0.15935f, -0.006736f, -0.046474f));
+		model = rotate(model, radians(rotPataTder), vec3(1.0f, 0.0f, 0.0f));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, value_ptr(model));
 		DewbackBRightLeg.Draw(lightingShader);
 
 		////Pierna trasera izquierda
-		model = translate(DewbackBodyMatrix, glm::vec3(0.17395f, 0.005927f, -0.022154f));
-		model = rotate(model, glm::radians(rotPataTizq), glm::vec3(1.0f, 0.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		model = translate(DewbackBodyMatrix, vec3(0.17395f, 0.005927f, -0.022154f));
+		model = rotate(model, radians(rotPataTizq), vec3(1.0f, 0.0f, 0.0f));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, value_ptr(model));
 		DewbackBLeftLeg.Draw(lightingShader);
 
 		//Cantina
-		model = glm::mat4(1);
+		model = mat4(1);
 		glBindVertexArray(VAO);
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, value_ptr(model));
 		Cantina.Draw(lightingShader);
 
 		/*
@@ -894,21 +1250,21 @@ int main()
 		Extra2Matrix = translate(Extra2Matrix, vec3(-0.61805f, 0.2368f, 1.5148f));
 		Extra2Matrix = rotate(Extra2Matrix, radians(-90.0f), vec3(0.0f, 1.0f, 0.0f));
 		glBindVertexArray(VAO);
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(Extra2Matrix));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, value_ptr(Extra2Matrix));
 		Extra2Body.Draw(lightingShader);
 
 		mat4 Extra2Arm = mat4(1);
 		Extra2Arm = translate(Extra2Matrix, vec3(0.036248f, 0.04077f, -0.006224f));
 		Extra2Arm = rotate(Extra2Arm, radians(rotExtra2LeftArm), vec3(1.0f, 0.0f, 0.0f));
 		glBindVertexArray(VAO);
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(Extra2Arm));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, value_ptr(Extra2Arm));
 		Extra2LeftArm.Draw(lightingShader);
 
 		mat4 Extra2Hand = mat4(1);
 		Extra2Hand = translate(Extra2Arm, vec3(0.054413f, -0.016304f, 0.058673));
 		Extra2Hand = rotate(Extra2Hand, radians(rotExtra2LeftHand), vec3(0.0f, 0.0f, 1.0f));
 		glBindVertexArray(VAO);
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(Extra2Hand));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, value_ptr(Extra2Hand));
 		Extra2LeftHand.Draw(lightingShader);
 
 		//Extra3
@@ -928,14 +1284,14 @@ int main()
 		R2D2Matrix = translate(R2D2Matrix, vec3(0.3168f, 0.1293f, 4.1478f));
 		R2D2Matrix = rotate(R2D2Matrix, radians(180.0f), vec3(0.0f, 1.0f, 0.0f));
 		glBindVertexArray(VAO);
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(R2D2Matrix));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, value_ptr(R2D2Matrix));
 		R2D2Body.Draw(lightingShader);
 		
 		model = mat4(1);
 		model = translate(R2D2Matrix, vec3(0.001126f, 0.195f, -0.007995f));
 		model = rotate(model, radians(rotR2D2Head), vec3(0.0f, 1.0f, 0.0f));
 		glBindVertexArray(VAO);
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, value_ptr(model));
 		R2D2Head.Draw(lightingShader);
 
 		//Jawa
@@ -949,7 +1305,7 @@ int main()
 		StormTrooperMatrix = translate(StormTrooperMatrix, vec3(0.0f, posCloneBodyY, 0.0f));
 		StormTrooperMatrix = rotate(StormTrooperMatrix, radians(rotCloneBody), vec3(1.0f, 0.0f, 0.0f));
 		glBindVertexArray(VAO);
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(StormTrooperMatrix));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, value_ptr(StormTrooperMatrix));
 		StormTrooper.Draw(lightingShader);
 
 		//Greedo
@@ -959,7 +1315,7 @@ int main()
 		GreedoMatrix = translate(GreedoMatrix, vec3(0.0f, posGreedoBodyY, 0.0f));
 		GreedoMatrix = rotate(GreedoMatrix, radians(-rotGreedoBodyZ), vec3(1.0f, 0.0f, 0.0f));
 		glBindVertexArray(VAO);
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(GreedoMatrix));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, value_ptr(GreedoMatrix));
 		Greedo.Draw(lightingShader);
 		
 		//Proyectile2
@@ -968,7 +1324,7 @@ int main()
 		model = rotate(model, radians(-90.0f), vec3(0.0f, 1.0f, 0.0f));
 		model = translate(model, vec3(0.0f, 0.0f, proyectile2T));
 		glBindVertexArray(VAO);
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, value_ptr(model));
 		Proyectile.Draw(lightingShader);
 
 		//Hansolo
@@ -977,7 +1333,7 @@ int main()
 		model = rotate(model, radians(94.4f), vec3(0.0f, 1.0f, 0.0f));
 		model = rotate(model, radians(-rotHanBodyY), vec3(0.0f, 1.0f, 0.0f));
 		glBindVertexArray(VAO);
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, value_ptr(model));
 		HanSolo.Draw(lightingShader);
 
 		//Proyectile1
@@ -987,7 +1343,7 @@ int main()
 		model = rotate(model, radians(-0.812f), vec3(0.0f, 0.0f, 1.0f));
 		model = translate(model, vec3(0.0f, 0.0f, proyectile1T));
 		glBindVertexArray(VAO);
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, value_ptr(model));
 		Proyectile.Draw(lightingShader);
 		
 		//LukeSkyWalker
@@ -999,14 +1355,14 @@ int main()
 		DarthVaderMatrix = translate(DarthVaderMatrix, vec3(4.01859f, 0.1656f, -0.16975f));
 		DarthVaderMatrix = rotate(DarthVaderMatrix, radians(-90.0f), vec3(0.0f, 1.0f, 0.0f));
 		glBindVertexArray(VAO);
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(DarthVaderMatrix));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, value_ptr(DarthVaderMatrix));
 		DarthVaderBody.Draw(lightingShader);
 
 		model = mat4(1);
 		model = translate(DarthVaderMatrix, vec3(-0.038212f, 0.054847f, -0.012091f));
 		model = rotate(model, radians(rotVaderRightArm), vec3(1.0, 0.0, 0.0));
 		glBindVertexArray(VAO);
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, value_ptr(model));
 		DarthVaderRightArm.Draw(lightingShader);
 	
 		//StormTrooperMounted1
@@ -1050,14 +1406,58 @@ int main()
 		drawInPosition(vec3(-0.8515f, 0.82373f,  2.3833f), LampBase, VAO, lightingShader, vec3(0.0f, 270.0f, 0.0f));
 		drawInPosition(vec3(-3.0212f, 0.82373f,  2.3833f), LampBase, VAO, lightingShader, vec3(0.0f, 90.0f, 0.0f));
 
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		// Santa Claus
+		// Body
+		mat4 SantaClausBodyMatrix = mat4(1);
+		SantaClausBodyMatrix = translate(SantaClausBodyMatrix, vec3(posXSanta, posYSanta, posZSanta));
+		SantaClausBodyMatrix = rotate(SantaClausBodyMatrix, radians(rotBodyYSanta), vec3(0.0f, 1.0f, 0.0));
+		SantaClausBodyMatrix = rotate(SantaClausBodyMatrix, radians(rotBodyXSanta), vec3(1.0f, 0.0f, 0.0));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, value_ptr(SantaClausBodyMatrix));
+		SantaClausBody.Draw(lightingShader);
+
+		// Left arm
+		mat4 SantaClausLeftArmMatrix = mat4(1);
+		SantaClausLeftArmMatrix = translate(SantaClausBodyMatrix, vec3(0.03577f, -0.01784f, -0.010859f));
+		SantaClausLeftArmMatrix = rotate(SantaClausLeftArmMatrix, radians(rotLeftArmSanta), vec3(1.0f, 0.0f, 0.0));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, value_ptr(SantaClausLeftArmMatrix));
+		SantaClausLeftArm.Draw(lightingShader);
+
+		// Right arm
+		mat4 SantaClausRightArmMatrix = mat4(1);
+		SantaClausRightArmMatrix = translate(SantaClausBodyMatrix, vec3(-0.038272f, -0.025719f, -0.012924f));
+		SantaClausRightArmMatrix = rotate(SantaClausRightArmMatrix, radians(rotRightArmSanta), vec3(1.0f, 0.0f, 0.0));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, value_ptr(SantaClausRightArmMatrix));
+		SantaClausRightArm.Draw(lightingShader);
+
+		// Right hand
+		mat4 SantaClausRightHandMatrix = mat4(1);
+		SantaClausRightHandMatrix = translate(SantaClausRightArmMatrix, vec3(-0.051122f, -0.06272f, 0.018834f));
+		SantaClausRightHandMatrix = rotate(SantaClausRightHandMatrix, radians(50.0f), vec3(1.0f, 0.0f, 0.0));
+		SantaClausRightHandMatrix = rotate(SantaClausRightHandMatrix, radians(rotRightWristSanta), vec3(0.0f, 0.0f, 1.0));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, value_ptr(SantaClausRightHandMatrix));
+		SantaClausRightHand.Draw(lightingShader);
+
+		// Right Leg
+		mat4 SantaClausRightLegMatrix = mat4(1);
+		SantaClausRightLegMatrix = translate(SantaClausBodyMatrix, vec3(0.001858f, -0.14761f, 0.005748f));
+		SantaClausRightLegMatrix = rotate(SantaClausRightLegMatrix, radians(rotRightLegSanta), vec3(1.0f, 0.0f, 0.0));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, value_ptr(SantaClausRightLegMatrix));
+		SantaClausRightLeg.Draw(lightingShader);
+
+		// Leftt Leg
+		mat4 SantaClausLefttLegMatrix = mat4(1);
+		SantaClausLefttLegMatrix = translate(SantaClausBodyMatrix, vec3(0.001858f, -0.14761f, 0.005748f));
+		SantaClausLefttLegMatrix = rotate(SantaClausLefttLegMatrix, radians(rotLeftLegSanta), vec3(1.0f, 0.0f, 0.0));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, value_ptr(SantaClausLefttLegMatrix));
+		SantaClausLeftLeg.Draw(lightingShader);
 
 		/*******************************************
 
 				 Lamparas
 
 		*******************************************/
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 		//Lamp
 		drawInPosition(vec3(-3.0212f, 0.82373f, -2.977f), Lamp, VAO, lightingShader, vec3(0.0f, 90.0f, 0.0f));
@@ -1076,7 +1476,7 @@ int main()
 		model = translate(Extra2Hand, vec3(0.007032f, 0.030808f, 0.042931f));
 		model = rotate(model, radians(-30.0f), vec3(1.0f, 0.0f, 0.0f));
 		glBindVertexArray(VAO);
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, value_ptr(model));
 		CupRed.Draw(lightingShader);
 
 		//CupGrey
@@ -1092,9 +1492,69 @@ int main()
 
 
 		/***********************
-		*	Anakin Fantasma     *
+		*	Anakin Ghost       *
 		************************/
-		drawInPosition(vec3(1.4433f, 0.18776f, -2.2851f), AnakinGhost, VAO, lightingShader, vec3(0.0f, 33.9f, 0.0f));
+		// Anakin Ghost
+		// Body
+		mat4 AnakinGhostBodyMatrix = mat4(1);
+		AnakinGhostBodyMatrix = translate(AnakinGhostBodyMatrix, vec3(posXAnakinG, posYAnakinG, posZAnakinG));
+		AnakinGhostBodyMatrix = rotate(AnakinGhostBodyMatrix, radians(rotBodyYAnakinG), vec3(0.0f, 1.0f, 0.0));
+		AnakinGhostBodyMatrix = rotate(AnakinGhostBodyMatrix, radians(rotBodyXAnakinG), vec3(1.0f, 0.0f, 0.0));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, value_ptr(AnakinGhostBodyMatrix));
+		AnakinGhostBody.Draw(lightingShader);
+
+		// Left arm
+		mat4 AnakinGhostLeftArmMatrix = mat4(1);
+		AnakinGhostLeftArmMatrix = translate(AnakinGhostBodyMatrix, vec3(0.040555f, -0.049699f, 0.0f));
+		AnakinGhostLeftArmMatrix = rotate(AnakinGhostLeftArmMatrix, radians(rotLeftArmAnakinG), vec3(1.0f, 0.0f, 0.0));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, value_ptr(AnakinGhostLeftArmMatrix));
+		AnakinGhostLeftArm.Draw(lightingShader);
+
+		// Right arm
+		mat4 AnakinGhostRightArmMatrix = mat4(1);
+		AnakinGhostRightArmMatrix = translate(AnakinGhostBodyMatrix, vec3(-0.040555f, -0.049699f, 0.0f));
+		AnakinGhostRightArmMatrix = rotate(AnakinGhostRightArmMatrix, radians(rotRightArmAnakinG), vec3(1.0f, 0.0f, 0.0));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, value_ptr(AnakinGhostRightArmMatrix));
+		AnakinGhostRightArm.Draw(lightingShader);
+
+		// Left hand
+		mat4 AnakinGhostLeftHandMatrix = mat4(1);
+		AnakinGhostLeftHandMatrix = translate(AnakinGhostLeftArmMatrix, vec3(0.055805f, -0.081271f, 0.021196f));
+		AnakinGhostLeftHandMatrix = rotate(AnakinGhostLeftHandMatrix, radians(41.0f), vec3(1.0f, 0.0f, 0.0));
+		AnakinGhostLeftHandMatrix = rotate(AnakinGhostLeftHandMatrix, radians(rotLeftWristAnakinG), vec3(0.0f, 0.0f, 1.0));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, value_ptr(AnakinGhostLeftHandMatrix));
+		AnakinGhostLeftHand.Draw(lightingShader);
+		
+		//Light Saber
+		glDisable(GL_BLEND);
+		mat4 AnakinGhostLightSaberMatrix = AnakinGhostLeftHandMatrix;
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, value_ptr(AnakinGhostLightSaberMatrix));
+		AnakinGhostLightSaber.Draw(lightingShader);
+
+		
+		// Right hand
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		mat4 AnakinGhostRightHandMatrix = mat4(1);
+		AnakinGhostRightHandMatrix = translate(AnakinGhostRightArmMatrix, vec3(-0.056267f, -0.086371f, 0.025752));
+		AnakinGhostRightHandMatrix = rotate(AnakinGhostRightHandMatrix, radians(45.0f), vec3(1.0f, 0.0f, 0.0));
+		AnakinGhostRightHandMatrix = rotate(AnakinGhostRightHandMatrix, radians(rotRightWristAnakinG), vec3(0.0f, 0.0f, 1.0));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, value_ptr(AnakinGhostRightHandMatrix));
+		AnakinGhostRightHand.Draw(lightingShader);
+
+		// Right Leg
+		mat4 AnakinGhostRightLegMatrix = mat4(1);
+		AnakinGhostRightLegMatrix = translate(AnakinGhostBodyMatrix, vec3(-0.042269f, -0.18936f, -0.010731));
+		AnakinGhostRightLegMatrix = rotate(AnakinGhostRightLegMatrix, radians(rotRightLegAnakinG), vec3(1.0f, 0.0f, 0.0));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, value_ptr(AnakinGhostRightLegMatrix));
+		AnakinGhostRightLeg.Draw(lightingShader);
+
+		// Leftt Leg
+		mat4 AnakinGhostLefttLegMatrix = mat4(1);
+		AnakinGhostLefttLegMatrix = translate(AnakinGhostBodyMatrix, vec3(0.037731f, -0.18936f, -0.010731));
+		AnakinGhostLefttLegMatrix = rotate(AnakinGhostLefttLegMatrix, radians(rotLefLegAnakinG), vec3(1.0f, 0.0f, 0.0));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, value_ptr(AnakinGhostLefttLegMatrix));
+		AnakinGhostLeftLeg.Draw(lightingShader);
 		glDisable(GL_BLEND);
 
 		/***************************
@@ -1110,8 +1570,8 @@ int main()
 		viewLoc = glGetUniformLocation(animShader.Program, "view");
 		projLoc = glGetUniformLocation(animShader.Program, "projection");
 
-		glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
-		glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
+		glUniformMatrix4fv(viewLoc, 1, GL_FALSE, value_ptr(view));
+		glUniformMatrix4fv(projLoc, 1, GL_FALSE, value_ptr(projection));
 
 		glUniform3f(glGetUniformLocation(animShader.Program, "material.specular"), 0.5f, 0.5f, 0.5f);
 		glUniform1f(glGetUniformLocation(animShader.Program, "material.shininess"), 32.0f);
@@ -1122,7 +1582,7 @@ int main()
 		view = camera.GetViewMatrix();
 		model = mat4(1);
 		glBindVertexArray(VAO);
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, value_ptr(model));
 		animacionPersonaje.Draw(animShader);
 */
 
@@ -1140,9 +1600,9 @@ int main()
 		// Draw skybox as last
 		glDepthFunc(GL_LEQUAL);  // Change depth function so depth test passes when values are equal to depth buffer's content
 		SkyBoxshader.Use();
-		view = glm::mat4(glm::mat3(camera.GetViewMatrix()));	// Remove any translation component of the view matrix
-		glUniformMatrix4fv(glGetUniformLocation(SkyBoxshader.Program, "view"), 1, GL_FALSE, glm::value_ptr(view));
-		glUniformMatrix4fv(glGetUniformLocation(SkyBoxshader.Program, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
+		view = mat4(mat3(camera.GetViewMatrix()));	// Remove any translation component of the view matrix
+		glUniformMatrix4fv(glGetUniformLocation(SkyBoxshader.Program, "view"), 1, GL_FALSE, value_ptr(view));
+		glUniformMatrix4fv(glGetUniformLocation(SkyBoxshader.Program, "projection"), 1, GL_FALSE, value_ptr(projection));
 
 		// skybox cube
 		glBindVertexArray(skyboxVAO);
@@ -1280,6 +1740,95 @@ void animacion()
 		}
 	}
 
+	/******************************
+	*							  *
+	*	  MOVIMIENTOS ANAKIN      *
+	*							  *
+	*******************************/
+	if (playAnakin)
+	{
+		if (i_curr_stepsAnakin >= i_max_steps) //end of animation between frames?
+		{
+			playIndexAnakin++;
+			if (playIndexAnakin > FrameIndexAnakin - 2)	//end of total animation?
+			{
+				cout << "Ternima anim" << endl;
+				playIndexAnakin = 0;
+				playAnakin = false;
+			}
+			else //Next frame interpolations
+			{
+				i_curr_stepsAnakin = 0; //Reset counter
+								  //Interpolation
+				interpolationAnakin();
+			}
+		}
+		else
+		{
+
+			//Draw animation
+			posXAnakinG += KeyFrameAnakinG[playIndexAnakin].incPosXAnakinG;
+			posYAnakinG += KeyFrameAnakinG[playIndexAnakin].incPosYAnakinG;
+			posZAnakinG += KeyFrameAnakinG[playIndexAnakin].incPosZAnakinG;
+
+			rotBodyXAnakinG += KeyFrameAnakinG[playIndexAnakin].incRotBodyXAnakinG;
+			rotBodyYAnakinG += KeyFrameAnakinG[playIndexAnakin].incRotBodyYAnakinG;
+
+			rotLefLegAnakinG += KeyFrameAnakinG[playIndexAnakin].incRotLefLegAnakinG;
+			rotRightLegAnakinG += KeyFrameAnakinG[playIndexAnakin].incRotRightLegAnakinG;
+			rotLeftArmAnakinG += KeyFrameAnakinG[playIndexAnakin].incRotLeftArmAnakinG;
+			rotRightArmAnakinG += KeyFrameAnakinG[playIndexAnakin].incRotRightArmAnakinG;
+			rotRightWristAnakinG += KeyFrameAnakinG[playIndexAnakin].incRotRightWristAnakinG;
+			rotLeftWristAnakinG += KeyFrameAnakinG[playIndexAnakin].incRotLeftWristAnakinG;
+
+			i_curr_stepsAnakin++;
+		}
+
+	}
+	/******************************
+	*							  *
+	*	  MOVIMIENTOS SANTA       *
+	*							  *
+	*******************************/
+	if (playSanta)
+	{
+		if (i_curr_stepsSanta >= i_max_steps) //end of animation between frames?
+		{
+			playIndexSanta++;
+			if (playIndexSanta > FrameIndexSanta - 2)	//end of total animation?
+			{
+				cout << "Ternima anim" << endl;
+				playIndexSanta = 0;
+				playSanta = false;
+			}
+			else //Next frame interpolations
+			{
+				i_curr_stepsSanta = 0; //Reset counter
+								  //Interpolation
+				interpolationSanta();
+			}
+		}
+		else
+		{
+
+			//Draw animation
+			posXSanta += KeyFrameSanta[playIndexSanta].incPosXSanta;
+			posYSanta += KeyFrameSanta[playIndexSanta].incPosYSanta;
+			posZSanta += KeyFrameSanta[playIndexSanta].incPosZSanta;
+
+			rotBodyXSanta += KeyFrameSanta[playIndexSanta].incRotBodyXSanta;
+			rotBodyYSanta += KeyFrameSanta[playIndexSanta].incRotBodyYSanta;
+
+			rotLeftLegSanta += KeyFrameSanta[playIndexSanta].incrotLeftLegSanta;
+			rotRightLegSanta += KeyFrameSanta[playIndexSanta].incRotRightLegSanta;
+			rotLeftArmSanta += KeyFrameSanta[playIndexSanta].incRotLeftArmSanta;
+			rotRightArmSanta += KeyFrameSanta[playIndexSanta].incRotRightArmSanta;
+			rotRightWristSanta += KeyFrameSanta[playIndexSanta].incRotRightWristSanta;
+
+			i_curr_stepsSanta++;
+		}
+
+	}
 		//Movimiento del personaje
 
 		if (play)
@@ -1289,7 +1838,7 @@ void animacion()
 				playIndex++;
 				if (playIndex>FrameIndex - 2)	//end of total animation?
 				{
-					printf("termina anim\n");
+					cout << "Ternima anim" << endl;
 					playIndex = 0;
 					play = false;
 				}
@@ -1342,12 +1891,60 @@ void KeyCallback(GLFWwindow *window, int key, int scancode, int action, int mode
 		}
 
 	}
+	if (keys[GLFW_KEY_M])
+	{
+		if (playAnakin == false && (FrameIndexAnakin > 1))
+		{
 
+			resetElementsAnakin();
+			//First Interpolation				
+			interpolationAnakin();
+
+			playAnakin = true;
+			playIndexAnakin = 0;
+			i_curr_stepsAnakin = 0;
+		}
+		else
+		{
+			playAnakin = false;
+		}
+
+	}
+
+	if (keys[GLFW_KEY_N])
+	{
+		if (playSanta == false && (FrameIndexSanta > 1))
+		{
+
+			resetElementsSanta();
+			//First Interpolation				
+			interpolationSanta();
+
+			playSanta = true;
+			playIndexSanta = 0;
+			i_curr_stepsSanta = 0;
+		}
+		else
+		{
+			playSanta = false;
+		}
+
+	}
+	
 	if (keys[GLFW_KEY_K])
 	{
-		if (FrameIndex<MAX_FRAMES)
+		if (FrameIndexAnakin< MAX_FRAMES_ANAKING)
 		{
-			saveFrame();
+			//saveFrame();
+			saveFrameAnakin();
+		}
+
+	}
+	if (keys[GLFW_KEY_J])
+	{
+		if (FrameIndexSanta < MAX_FRAMES_SANTA)
+		{
+			saveFrameSanta();
 		}
 
 	}
@@ -1396,9 +1993,9 @@ void KeyCallback(GLFWwindow *window, int key, int scancode, int action, int mode
 	{
 		active = !active;
 		if (active)
-			LightP1 = glm::vec3(1.0f, 0.0f, 0.0f);
+			LightP1 = vec3(1.0f, 0.0f, 0.0f);
 		else
-			LightP1 = glm::vec3(0.0f, 0.0f, 0.0f);
+			LightP1 = vec3(0.0f, 0.0f, 0.0f);
 	}
 }
 
@@ -1425,106 +2022,112 @@ void MouseCallback(GLFWwindow *window, double xPos, double yPos)
 void DoMovement()
 {
 
-	if (keys[GLFW_KEY_1])
-	{
-
-		rotY += 1;
-
-	}
-	
-	if (keys[GLFW_KEY_2])
-	{
-		rotExtra2LeftArm += 1.0f;
-		
-	}
-
-	if (keys[GLFW_KEY_3])
-	{
-
-		rotExtra2LeftArm -= 1.0f;
-	}
-	if (keys[GLFW_KEY_4])
-	{
-	
-		rotExtra2LeftHand += 1.0f;
-	}
-
-	if (keys[GLFW_KEY_5])
-	{
-		rotExtra2LeftHand -= 1.0f;
-	}
-	if (keys[GLFW_KEY_6])
-	{
-		proyectile1T += 0.1f;
-		cout << "proyectile1T = " << proyectile1T << endl;
-	}
-
-	if (keys[GLFW_KEY_7])
-	{
-		proyectile1T -= 0.1f;
-		cout << "proyectile1T = " << proyectile1T << endl;
-	}
-	if (keys[GLFW_KEY_8])
-	{
-		proyectile2T += 0.1f;
-
-	}
-
-	if (keys[GLFW_KEY_9])
-	{
-		proyectile2T -= 0.1f;
-
-	}
-
-
-	
-
-	//Mov Personaje
-	if (keys[GLFW_KEY_H])
-	{
-		posZ += 0.1;
-	}
-
-	if (keys[GLFW_KEY_Y])
-	{
-		posZ -= 0.1;
-	}
-
+	//controles anakin
+	if (keys[GLFW_KEY_UP])
+		posXAnakinG += 0.05;
+	if (keys[GLFW_KEY_DOWN])
+		posXAnakinG -= 0.05;
+	if (keys[GLFW_KEY_LEFT])
+		posZAnakinG += 0.05;
+	if (keys[GLFW_KEY_RIGHT])
+		posZAnakinG -= 0.05;
+	if (keys[GLFW_KEY_Q])
+		posYAnakinG += 0.05;
+	if (keys[GLFW_KEY_E])
+		posYAnakinG -= 0.05;
+	if (keys[GLFW_KEY_HOME])
+		rotBodyXAnakinG += 1;
+	if (keys[GLFW_KEY_END])
+		rotBodyXAnakinG -= 1;
+	if (keys[GLFW_KEY_PAGE_UP])
+		rotBodyYAnakinG += 1;
+	if (keys[GLFW_KEY_PAGE_DOWN])
+		rotBodyYAnakinG -= 1;
+	if (keys[GLFW_KEY_R])
+		rotLefLegAnakinG += 1;
+	if (keys[GLFW_KEY_F])
+		rotLefLegAnakinG -= 1;
+	if (keys[GLFW_KEY_T])
+		rotRightLegAnakinG += 1;
 	if (keys[GLFW_KEY_G])
-	{
-		posX -= 0.1;
-	}
-
-	if (keys[GLFW_KEY_J])
-	{
-		posX += 0.1;
-	}
-
-
+		rotRightLegAnakinG -= 1;
+	if (keys[GLFW_KEY_Y])
+		rotLeftArmAnakinG += 1;
+	if (keys[GLFW_KEY_H])
+		rotLeftArmAnakinG -= 1;
+	if (keys[GLFW_KEY_Z])
+		rotRightArmAnakinG += 1;
+	if (keys[GLFW_KEY_X])
+		rotRightArmAnakinG -= 1;
+	if (keys[GLFW_KEY_C])
+		rotLeftWristAnakinG += 1;
+	if (keys[GLFW_KEY_V])
+		rotLeftWristAnakinG -= 1;
+	//Controles santa claus
+	if (keys[GLFW_KEY_F1])
+		posXSanta += 0.05;
+	if (keys[GLFW_KEY_1])
+		posXSanta -= 0.05;
+	if (keys[GLFW_KEY_F2])
+		posYSanta += 0.05;
+	if (keys[GLFW_KEY_2])
+		posYSanta -= 0.05;
+	if (keys[GLFW_KEY_F3])
+		posZSanta += 0.05;
+	if (keys[GLFW_KEY_3])
+		posZSanta -= 0.05;
+	if (keys[GLFW_KEY_F4])
+		rotBodyXSanta += 1;
+	if (keys[GLFW_KEY_4])
+		rotBodyXSanta -= 1;
+	if (keys[GLFW_KEY_F5])
+		rotBodyYSanta += 1;
+	if (keys[GLFW_KEY_5])
+		rotBodyYSanta -= 1;
+	if (keys[GLFW_KEY_F6])
+		rotLeftLegSanta += 1;
+	if (keys[GLFW_KEY_6])
+		rotLeftLegSanta -= 1;
+	if (keys[GLFW_KEY_F7])
+		rotRightLegSanta += 1;
+	if (keys[GLFW_KEY_7])
+		rotRightLegSanta -= 1;
+	if (keys[GLFW_KEY_F8])
+		rotLeftArmSanta += 1;
+	if (keys[GLFW_KEY_8])
+		rotLeftArmSanta -= 1;
+	if (keys[GLFW_KEY_F9])
+		rotRightArmSanta += 1;
+	if (keys[GLFW_KEY_9])
+		rotRightArmSanta -= 1;
+	if (keys[GLFW_KEY_F10])
+		rotRightWristSanta += 1;
+	if (keys[GLFW_KEY_0])
+		rotRightWristSanta -= 1;
 
 
 	// Camera controls
-	if (keys[GLFW_KEY_W] || keys[GLFW_KEY_UP])
+	if (keys[GLFW_KEY_W])
 	{
 		camera.ProcessKeyboard(FORWARD, deltaTime);
 
 	}
 
-	if (keys[GLFW_KEY_S] || keys[GLFW_KEY_DOWN])
+	if (keys[GLFW_KEY_S])
 	{
 		camera.ProcessKeyboard(BACKWARD, deltaTime);
 
 
 	}
 
-	if (keys[GLFW_KEY_A] || keys[GLFW_KEY_LEFT])
+	if (keys[GLFW_KEY_A])
 	{
 		camera.ProcessKeyboard(LEFT, deltaTime);
 
 
 	}
 
-	if (keys[GLFW_KEY_D] || keys[GLFW_KEY_RIGHT])
+	if (keys[GLFW_KEY_D])
 	{
 		camera.ProcessKeyboard(RIGHT, deltaTime);
 	}
