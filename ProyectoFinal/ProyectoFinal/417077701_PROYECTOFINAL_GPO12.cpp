@@ -376,13 +376,23 @@ int playIndex = 0;
 
 // Positions of the point lights
 vec3 pointLightPositions[] = {
-	vec3(posX,posY,posZ),
-	vec3(-10.0,-10.0,-10.0),
-	vec3(-10.0,-10.0,-10.0),
-	vec3(-10.0,-10.0,-10.0),
+	vec3(-3.0212f, 0.82f, -2.977f),
+	vec3(2.1736f, 0.82f, -2.7845f),
+	vec3(3.2908f, 0.82f, -1.1816f),
+	vec3(3.9499f, 0.82f, 0.7824f),
+	vec3(1.6387f, 0.82f, 2.3833f),
+	vec3(-0.8515f, 0.82f, 2.3833f),
+	vec3(-3.0212f, 0.82f, 2.3833f)
 };
 
+//Variables para luces
 vec3 LightP1;
+vec3 LightP2;
+vec3 LightP3;
+vec3 LightP4;
+vec3 LightP5;
+vec3 LightP6;
+vec3 LightP7;
 
 
 
@@ -390,8 +400,6 @@ vec3 LightP1;
 void saveFrame(void)
 {
 
-	printf("frameindex %d\n", FrameIndex);
-	
 	KeyFrame[FrameIndex].posX = posX;
 	KeyFrame[FrameIndex].posY = posY;
 	KeyFrame[FrameIndex].posZ = posZ;
@@ -501,6 +509,7 @@ bool playAnimDarth = false;
 
 //anim han/greedo
 float rotHanBodyY = 0.0f, rotGreedoBodyZ = 0.0f, proyectile1T = 0.0f, proyectile2T = 0.0f, posGreedoBodyY = 0.0f;
+float rotHanRightArm = 0.0f;
 bool playAnimHan = false;
 
 
@@ -524,7 +533,7 @@ int main()
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);*/
 
 	// Create a GLFWwindow object that we can use for GLFW's functions
-	GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "Practica 12", nullptr, nullptr);
+	GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "PROYECTO FINAL EQUIPO 7", nullptr, nullptr);
 
 	if (nullptr == window)
 	{
@@ -635,10 +644,11 @@ int main()
 	Model StormTrooper((char*)"Models/LegoStarWarsTCSModels/Characters/StormTrooper/StormTrooperSeated.obj");
 
 	// HanSolo
-	Model HanSolo((char*)"Models/LegoStarWarsTCSModels/Characters/HanSolo/HanSoloAiming.obj");
-
+	Model HanSoloBody((char*)"Models/LegoStarWarsTCSModels/Characters/HanSolo/HanSoloAimingBody.obj");
+	Model HanSoloRightArm((char*)"Models/LegoStarWarsTCSModels/Characters/HanSolo/HanSoloAimingRightArm.obj");
 	//Greedo
-	Model Greedo((char*)"Models/LegoStarWarsTCSModels/Characters/Greedo/GreedoAiming.obj");
+	Model GreedoBody((char*)"Models/LegoStarWarsTCSModels/Characters/Greedo/GreedoAimingBody.obj");
+	Model GreedoLegs((char*)"Models/LegoStarWarsTCSModels/Characters/Greedo/GreedoAimingLegs.obj");
 
 	//LukeSkyWalker
 	Model LukeSkyWalker((char*)"Models/LegoStarWarsTCSModels/Characters/LukeSkyWalker/LukeSkyWalker.obj");
@@ -1102,48 +1112,77 @@ int main()
 		// == ==========================
 		// Directional light
 		glUniform3f(glGetUniformLocation(lightingShader.Program, "dirLight.direction"), -0.2f, -1.0f, -0.3f);
-		glUniform3f(glGetUniformLocation(lightingShader.Program, "dirLight.ambient"), 1.0f, 1.0f, 1.0f);
-		glUniform3f(glGetUniformLocation(lightingShader.Program, "dirLight.diffuse"), 0.3f, 0.3f, 0.3f);
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "dirLight.ambient"), 0.8f, 0.8f, 0.8f);
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "dirLight.diffuse"), 0.2f, 0.2f, 0.2f);
 		glUniform3f(glGetUniformLocation(lightingShader.Program, "dirLight.specular"), 0.5f, 0.5f, 0.5f);
 
 
+		float linear{ 0.35f },
+			  quadratic{ 0.44f };
 		// Point light 1
 		glUniform3f(glGetUniformLocation(lightingShader.Program, "pointLights[0].position"), pointLightPositions[0].x, pointLightPositions[0].y, pointLightPositions[0].z);
 		glUniform3f(glGetUniformLocation(lightingShader.Program, "pointLights[0].ambient"), 0.05f, 0.05f, 0.05f);
 		glUniform3f(glGetUniformLocation(lightingShader.Program, "pointLights[0].diffuse"), LightP1.x, LightP1.y, LightP1.z);
 		glUniform3f(glGetUniformLocation(lightingShader.Program, "pointLights[0].specular"), LightP1.x, LightP1.y, LightP1.z);
 		glUniform1f(glGetUniformLocation(lightingShader.Program, "pointLights[0].constant"), 1.0f);
-		glUniform1f(glGetUniformLocation(lightingShader.Program, "pointLights[0].linear"), 0.09f);
-		glUniform1f(glGetUniformLocation(lightingShader.Program, "pointLights[0].quadratic"), 0.032f);
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "pointLights[0].linear"), linear);
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "pointLights[0].quadratic"), quadratic);
 
 
 
 		// Point light 2
 		glUniform3f(glGetUniformLocation(lightingShader.Program, "pointLights[1].position"), pointLightPositions[1].x, pointLightPositions[1].y, pointLightPositions[1].z);
 		glUniform3f(glGetUniformLocation(lightingShader.Program, "pointLights[1].ambient"), 0.05f, 0.05f, 0.05f);
-		glUniform3f(glGetUniformLocation(lightingShader.Program, "pointLights[1].diffuse"), 1.0f, 1.0f, 0.0f);
-		glUniform3f(glGetUniformLocation(lightingShader.Program, "pointLights[1].specular"), 1.0f, 1.0f, 0.0f);
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "pointLights[1].diffuse"), LightP2.x, LightP2.y, LightP2.z);
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "pointLights[1].specular"), LightP2.x, LightP2.y, LightP2.z);
 		glUniform1f(glGetUniformLocation(lightingShader.Program, "pointLights[1].constant"), 1.0f);
-		glUniform1f(glGetUniformLocation(lightingShader.Program, "pointLights[1].linear"), 0.09f);
-		glUniform1f(glGetUniformLocation(lightingShader.Program, "pointLights[1].quadratic"), 0.032f);
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "pointLights[1].linear"), linear);
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "pointLights[1].quadratic"), quadratic);
 
 		// Point light 3
 		glUniform3f(glGetUniformLocation(lightingShader.Program, "pointLights[2].position"), pointLightPositions[2].x, pointLightPositions[2].y, pointLightPositions[2].z);
 		glUniform3f(glGetUniformLocation(lightingShader.Program, "pointLights[2].ambient"), 0.05f, 0.05f, 0.05f);
-		glUniform3f(glGetUniformLocation(lightingShader.Program, "pointLights[2].diffuse"), 0.0f, 1.0f, 1.0f);
-		glUniform3f(glGetUniformLocation(lightingShader.Program, "pointLights[2].specular"), 0.0f, 1.0f, 1.0f);
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "pointLights[2].diffuse"), LightP3.x, LightP3.y, LightP3.z);
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "pointLights[2].specular"), LightP3.x, LightP3.y, LightP3.z);
 		glUniform1f(glGetUniformLocation(lightingShader.Program, "pointLights[2].constant"), 1.0f);
-		glUniform1f(glGetUniformLocation(lightingShader.Program, "pointLights[2].linear"), 0.09f);
-		glUniform1f(glGetUniformLocation(lightingShader.Program, "pointLights[2].quadratic"), 0.032f);
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "pointLights[2].linear"), linear);
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "pointLights[2].quadratic"), quadratic);
 
 		// Point light 4
 		glUniform3f(glGetUniformLocation(lightingShader.Program, "pointLights[3].position"), pointLightPositions[3].x, pointLightPositions[3].y, pointLightPositions[3].z);
 		glUniform3f(glGetUniformLocation(lightingShader.Program, "pointLights[3].ambient"), 0.05f, 0.05f, 0.05f);
-		glUniform3f(glGetUniformLocation(lightingShader.Program, "pointLights[3].diffuse"), 1.0f, 0.0f, 1.0f);
-		glUniform3f(glGetUniformLocation(lightingShader.Program, "pointLights[3].specular"), 1.0f, 0.0f, 1.0f);
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "pointLights[3].diffuse"), LightP4.x, LightP4.y, LightP4.z);
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "pointLights[3].specular"), LightP4.x, LightP4.y, LightP4.z);
 		glUniform1f(glGetUniformLocation(lightingShader.Program, "pointLights[3].constant"), 1.0f);
-		glUniform1f(glGetUniformLocation(lightingShader.Program, "pointLights[3].linear"), 0.09f);
-		glUniform1f(glGetUniformLocation(lightingShader.Program, "pointLights[3].quadratic"), 0.032f);
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "pointLights[3].linear"), linear);
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "pointLights[3].quadratic"), quadratic);
+
+		// Point light 5
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "pointLights[4].position"), pointLightPositions[4].x, pointLightPositions[4].y, pointLightPositions[4].z);
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "pointLights[4].ambient"), 0.05f, 0.05f, 0.05f);
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "pointLights[4].diffuse"), LightP5.x, LightP5.y, LightP5.z);
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "pointLights[4].specular"), LightP5.x, LightP5.y, LightP5.z);
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "pointLights[4].constant"), 1.0f);
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "pointLights[4].linear"), linear);
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "pointLights[4].quadratic"), quadratic);
+
+		// Point light 6
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "pointLights[5].position"), pointLightPositions[5].x, pointLightPositions[5].y, pointLightPositions[5].z);
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "pointLights[5].ambient"), 0.05f, 0.05f, 0.05f);
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "pointLights[5].diffuse"), LightP6.x, LightP6.y, LightP6.z);
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "pointLights[5].specular"), LightP6.x, LightP6.y, LightP6.z);
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "pointLights[5].constant"), 1.0f);
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "pointLights[5].linear"), linear);
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "pointLights[5].quadratic"), quadratic);
+
+		// Point light 7
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "pointLights[6].position"), pointLightPositions[6].x, pointLightPositions[6].y, pointLightPositions[6].z);
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "pointLights[6].ambient"), 0.05f, 0.05f, 0.05f);
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "pointLights[6].diffuse"), LightP7.x, LightP7.y, LightP7.z);
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "pointLights[6].specular"), LightP7.x, LightP7.y, LightP7.z);
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "pointLights[6].constant"), 1.0f);
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "pointLights[6].linear"), linear);
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "pointLights[6].quadratic"), quadratic);
 
 		// SpotLight
 		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight.position"), camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z);
@@ -1330,15 +1369,24 @@ int main()
 		StormTrooper.Draw(lightingShader);
 
 		//Greedo
+		//body
 		mat4 GreedoMatrix = mat4(1);
-		GreedoMatrix = translate(GreedoMatrix, vec3(3.5887f, 0.15107f, -2.8939f));
+		GreedoMatrix = translate(GreedoMatrix, vec3(3.5887f, 0.21107f, -2.8939f));
 		GreedoMatrix = rotate(GreedoMatrix, radians(-90.0f), vec3(0.0f, 1.0f, 0.0f));
 		GreedoMatrix = translate(GreedoMatrix, vec3(0.0f, posGreedoBodyY, 0.0f));
 		GreedoMatrix = rotate(GreedoMatrix, radians(-rotGreedoBodyZ), vec3(1.0f, 0.0f, 0.0f));
 		glBindVertexArray(VAO);
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, value_ptr(GreedoMatrix));
-		Greedo.Draw(lightingShader);
-		
+		GreedoBody.Draw(lightingShader);
+		//legs
+		mat4 GreedoMatrixLegs;
+		GreedoMatrixLegs = translate(GreedoMatrix, vec3(-0.012992, -0.11693, 0.0));
+		GreedoMatrixLegs = rotate(GreedoMatrixLegs, radians(-rotGreedoBodyZ), vec3(1.0f, 0.0f, 0.0f));
+		glBindVertexArray(VAO);
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, value_ptr(GreedoMatrixLegs));
+		GreedoLegs.Draw(lightingShader);
+
+
 		//Proyectile2
 		model = mat4(1);
 		model = translate(model, vec3(3.4643f, 0.24266f, -2.9742f));
@@ -1355,11 +1403,18 @@ int main()
 		model = rotate(model, radians(-rotHanBodyY), vec3(0.0f, 1.0f, 0.0f));
 		glBindVertexArray(VAO);
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, value_ptr(model));
-		HanSolo.Draw(lightingShader);
+		HanSoloBody.Draw(lightingShader);
+
+		mat4 hanRightArm;
+		hanRightArm = translate(model, vec3(-0.040121, 0.025901,-0.006175));
+		hanRightArm = rotate(hanRightArm, radians(rotHanRightArm), vec3(1.0, 0.0, 0.0));
+		glBindVertexArray(VAO);
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, value_ptr(hanRightArm));
+		HanSoloRightArm.Draw(lightingShader);
 
 		//Proyectile1
 		model = mat4(1);
-		model = translate(model, vec3(3.195f, 0.22943f, -2.8994f));
+		model = translate(model, vec3(3.195f, 0.21043f, -2.8994f));
 		model = rotate(model, radians(95.3f), vec3(0.0f, 1.0f, 0.0f));
 		model = rotate(model, radians(-0.812f), vec3(0.0f, 0.0f, 1.0f));
 		model = translate(model, vec3(0.0f, 0.0f, proyectile1T));
@@ -1422,7 +1477,7 @@ int main()
 		drawInPosition(vec3(-3.0212f, 0.82373f, -2.977f ), LampBase, VAO, lightingShader, vec3(0.0f, 90.0f, 0.0f));
 		drawInPosition(vec3( 2.1736f, 0.82373f, -2.7845f), LampBase, VAO, lightingShader, vec3(0.0f, 47.9f, 0.0f));
 		drawInPosition(vec3( 3.2908f, 0.82373f, -1.1816f), LampBase, VAO, lightingShader, vec3(0.0f, 0.0f, 0.0f));
-		drawInPosition(vec3( 3.9499f, 0.82373f,  0.7824f), LampBase, VAO, lightingShader, vec3(0.0f, 0.0f, 0.0f));
+		drawInPosition(vec3( 3.2499f, 0.82373f,  0.7824f), LampBase, VAO, lightingShader, vec3(0.0f, 0.0f, 0.0f));
 		drawInPosition(vec3( 1.6387f, 0.82373f,  2.3833f), LampBase, VAO, lightingShader, vec3(0.0f, 270.0f, 0.0f));
 		drawInPosition(vec3(-0.8515f, 0.82373f,  2.3833f), LampBase, VAO, lightingShader, vec3(0.0f, 270.0f, 0.0f));
 		drawInPosition(vec3(-3.0212f, 0.82373f,  2.3833f), LampBase, VAO, lightingShader, vec3(0.0f, 90.0f, 0.0f));
@@ -1430,7 +1485,7 @@ int main()
 		drawInPosition(vec3(-3.0212f, 0.5f, -2.977f), Bota1, VAO, lightingShader, vec3(0.0f, 90.0f, 0.0f));
 		drawInPosition(vec3(2.1736f, 0.5f, -2.7845f), Bota2, VAO, lightingShader, vec3(0.0f, 47.9f, 0.0f));
 		drawInPosition(vec3(3.2908f, 0.5f, -1.1816f), Bota3, VAO, lightingShader, vec3(0.0f, 0.0f, 0.0f));
-		drawInPosition(vec3(3.9499f, 0.5f, 0.7824f), Bota4, VAO, lightingShader, vec3(0.0f, 0.0f, 0.0f));
+		drawInPosition(vec3(3.2499f, 0.5f, 0.7824f), Bota4, VAO, lightingShader, vec3(0.0f, 0.0f, 0.0f));
 		drawInPosition(vec3(1.6387f, 0.5f, 2.3833f), Bota5, VAO, lightingShader, vec3(0.0f, 270.0f, 0.0f));
 		drawInPosition(vec3(-0.8515f, 0.5f, 2.3833f), Bota6, VAO, lightingShader, vec3(0.0f, 270.0f, 0.0f));
 		drawInPosition(vec3(-3.0212f, 0.5f, 2.3833f), Bota7, VAO, lightingShader, vec3(0.0f, 90.0f, 0.0f));
@@ -1491,7 +1546,7 @@ int main()
 		drawInPosition(vec3(-3.0212f, 0.82373f, -2.977f), Lamp, VAO, lightingShader, vec3(0.0f, 90.0f, 0.0f));
 		drawInPosition(vec3(2.1736f, 0.82373f, -2.7845f), Lamp, VAO, lightingShader, vec3(0.0f, 47.9f, 0.0f));
 		drawInPosition(vec3(3.2908f, 0.82373f, -1.1816f), Lamp, VAO, lightingShader, vec3(0.0f, 0.0f, 0.0f));
-		drawInPosition(vec3(3.9499f, 0.82373f, 0.7824f), Lamp, VAO, lightingShader, vec3(0.0f, 0.0f, 0.0f));
+		drawInPosition(vec3(3.2499f, 0.82373f, 0.7824f), Lamp, VAO, lightingShader, vec3(0.0f, 0.0f, 0.0f));
 		drawInPosition(vec3(1.6387f, 0.82373f, 2.3833f), Lamp, VAO, lightingShader, vec3(0.0f, 270.0f, 0.0f));
 		drawInPosition(vec3(-0.8515f, 0.82373f, 2.3833f), Lamp, VAO, lightingShader, vec3(0.0f, 270.0f, 0.0f));
 		drawInPosition(vec3(-3.0212f, 0.82373f, 2.3833f), Lamp, VAO, lightingShader, vec3(0.0f, 90.0f, 0.0f));
@@ -1728,6 +1783,7 @@ void animacion()
 			cout << " proyectile1T " << proyectile1T << endl;
 			proyectile2T += 0.02f;
 			rotHanBodyY -= 3.0f;
+			rotHanRightArm += 1.0f;
 			if (proyectile1T > 0.4) {
 				stateAnimHan = 2;
 				break;
@@ -1737,7 +1793,7 @@ void animacion()
 			proyectile1T = 10.0f;
 			proyectile2T = 10.0f; 
 			rotGreedoBodyZ += 1.0f;
-			posGreedoBodyY -= 0.001f;
+			posGreedoBodyY -= 0.002f;
 			if (rotGreedoBodyZ > 90) {
 				stateAnimHan = 0;
 				break;
@@ -2020,10 +2076,25 @@ void KeyCallback(GLFWwindow *window, int key, int scancode, int action, int mode
 	if (keys[GLFW_KEY_SPACE])
 	{
 		active = !active;
-		if (active)
+		if (active) {
 			LightP1 = vec3(1.0f, 0.0f, 0.0f);
-		else
+			LightP2 = vec3(0.0f, 0.0f, 1.0f);
+			LightP3 = vec3(0.0f, 1.0f, 0.0f);
+			LightP4 = vec3(1.0f, 1.0f, 0.0f);
+			LightP5 = vec3(1.0f, 0.0f, 1.0f);
+			LightP6 = vec3(0.0f, 1.0f, 1.0f);
+			LightP7 = vec3(1.0f, 1.0f, 1.0f);
+		}
+		else {
 			LightP1 = vec3(0.0f, 0.0f, 0.0f);
+			LightP2 = vec3(0.0f, 0.0f, 0.0f);
+			LightP3 = vec3(0.0f, 0.0f, 0.0f);
+			LightP4 = vec3(0.0f, 0.0f, 0.0f);
+			LightP5 = vec3(0.0f, 0.0f, 0.0f);
+			LightP6 = vec3(0.0f, 0.0f, 0.0f);
+			LightP7 = vec3(0.0f, 0.0f, 0.0f);
+		}
+			
 	}
 }
 

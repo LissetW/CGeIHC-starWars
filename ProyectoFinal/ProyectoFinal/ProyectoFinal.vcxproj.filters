@@ -26,14 +26,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Shaders\modelLoading.frag">
-      <Filter>Archivos de origen</Filter>
-    </None>
-    <None Include="Shaders\modelLoading.vs">
-      <Filter>Archivos de origen</Filter>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="417077701_PROYECTOFINAL_GPO12.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
