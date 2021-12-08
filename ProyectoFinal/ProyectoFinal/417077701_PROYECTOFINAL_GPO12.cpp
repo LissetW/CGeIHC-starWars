@@ -23,6 +23,11 @@ using namespace glm;
 //Load Models
 #include "SOIL2/SOIL2.h"
 
+//Music
+#include <irrKlang.h>
+using namespace irrklang;
+
+ISoundEngine *SoundEngine = createIrrKlangDevice();
 
 // Other includes
 #include "Shader.h"
@@ -2084,6 +2089,7 @@ void KeyCallback(GLFWwindow *window, int key, int scancode, int action, int mode
 			LightP5 = vec3(1.0f, 0.0f, 1.0f);
 			LightP6 = vec3(0.0f, 1.0f, 1.0f);
 			LightP7 = vec3(1.0f, 1.0f, 1.0f);
+			SoundEngine->play2D("Audio/Star Wars - Mos Eisley Cantina Band Theme.mp3", true);
 		}
 		else {
 			LightP1 = vec3(0.0f, 0.0f, 0.0f);
@@ -2093,6 +2099,7 @@ void KeyCallback(GLFWwindow *window, int key, int scancode, int action, int mode
 			LightP5 = vec3(0.0f, 0.0f, 0.0f);
 			LightP6 = vec3(0.0f, 0.0f, 0.0f);
 			LightP7 = vec3(0.0f, 0.0f, 0.0f);
+			SoundEngine->stopAllSounds();
 		}
 			
 	}
