@@ -690,6 +690,12 @@ int main()
 	Model SantaClausLeftLeg((char*)"Models/LegoStarWarsTCSModels/Characters/SantaClaus/SantaLeftLeg.obj");
 	Model SantaClausRightLeg((char*)"Models/LegoStarWarsTCSModels/Characters/SantaClaus/SantaRightLeg.obj");
 
+	// Musicos
+	Model Drums((char*)"Models/LegoStarWarsTCSModels/Characters/Musicians/drums.obj");
+	Model Flute((char*)"Models/LegoStarWarsTCSModels/Characters/Musicians/flute.obj");
+	Model Musician((char*)"Models/LegoStarWarsTCSModels/Characters/Musicians/musician.obj");
+	Model Sax((char*)"Models/LegoStarWarsTCSModels/Characters/Musicians/sax.obj");
+
 	/*********************************
 			Elementos del entorno
 	*********************************/
@@ -726,11 +732,14 @@ int main()
 	Model Bota4((char*)"Models/LegoStarWarsTCSModels/Decoration/botaNavidena/bota4.obj");
 	Model Bota5((char*)"Models/LegoStarWarsTCSModels/Decoration/botaNavidena/bota10.obj");
 	Model Bota6((char*)"Models/LegoStarWarsTCSModels/Decoration/botaNavidena/bota11.obj");
-	Model Bota7((char*)"Models/LegoStarWarsTCSModels/Decoration/botaNavidena/bota12.obj");
-	Model Bota8((char*)"Models/LegoStarWarsTCSModels/Decoration/botaNavidena/bota13.obj");
+	Model Bota7((char*)"Models/LegoStarWarsTCSModels/Decoration/botaNavidena/bota13.obj");
+	Model Corona((char*)"Models/LegoStarWarsTCSModels/Decoration/Corona/corona.obj");
 	/*********************************
 			Vehiculos
 	*********************************/
+
+	// Trineo de santa
+	Model Sleigh((char*)"Models/LegoStarWarsTCSModels/Vehichles/sleigh/sleigh.obj");
 
 	//DewBack
 	Model DewbackBody((char*)"Models/LegoStarWarsTCSModels/Vehichles/DewBack/DewbackBody.obj");
@@ -1453,6 +1462,11 @@ int main()
 		//Chewbaca
 		drawInPosition(vec3(2.6819f, 0.18164f, 1.9075f), Chewbaca, VAO, lightingShader, vec3(0.0f, 26.1f, 0.0f));
 
+		//Músicos
+		drawInPosition(vec3(-0.526f, 0.0734f, -4.4976f), Flute, VAO, lightingShader, vec3(0.0f, 0.0f, 0.0f));
+		drawInPosition(vec3(-0.2314f, 0.0641f, -4.9444f), Drums, VAO, lightingShader, vec3(0.0f, 3.2f, 0.0f));
+		drawInPosition(vec3(0.09126f, 0.1292f, -4.6073f), Musician, VAO, lightingShader, vec3(0.0f, -23.7f, 0.0f));
+		drawInPosition(vec3(0.29343f, 0.0666f, -4.2438), Sax, VAO, lightingShader, vec3(0.0f, -20.1f, 0.0f));
 		/*******************************************
 
 				 Carga Tazas
@@ -1487,13 +1501,16 @@ int main()
 		drawInPosition(vec3(-0.8515f, 0.82373f,  2.3833f), LampBase, VAO, lightingShader, vec3(0.0f, 270.0f, 0.0f));
 		drawInPosition(vec3(-3.0212f, 0.82373f,  2.3833f), LampBase, VAO, lightingShader, vec3(0.0f, 90.0f, 0.0f));
 		// Botas de navidad
-		drawInPosition(vec3(-3.0212f, 0.5f, -2.977f), Bota1, VAO, lightingShader, vec3(0.0f, 90.0f, 0.0f));
-		drawInPosition(vec3(2.1736f, 0.5f, -2.7845f), Bota2, VAO, lightingShader, vec3(0.0f, 47.9f, 0.0f));
-		drawInPosition(vec3(3.2908f, 0.5f, -1.1816f), Bota3, VAO, lightingShader, vec3(0.0f, 0.0f, 0.0f));
-		drawInPosition(vec3(3.2499f, 0.5f, 0.7824f), Bota4, VAO, lightingShader, vec3(0.0f, 0.0f, 0.0f));
-		drawInPosition(vec3(1.6387f, 0.5f, 2.3833f), Bota5, VAO, lightingShader, vec3(0.0f, 270.0f, 0.0f));
-		drawInPosition(vec3(-0.8515f, 0.5f, 2.3833f), Bota6, VAO, lightingShader, vec3(0.0f, 270.0f, 0.0f));
-		drawInPosition(vec3(-3.0212f, 0.5f, 2.3833f), Bota7, VAO, lightingShader, vec3(0.0f, 90.0f, 0.0f));
+		drawInPosition(vec3(-3.0212f, 0.5f, -2.977f), Bota1, VAO, lightingShader, vec3(0.0f, 0.0f, 0.0f));
+		drawInPosition(vec3(2.1736f, 0.5f, -2.8654f), Bota2, VAO, lightingShader, vec3(0.0f, -31.8f, 0.0f));
+		drawInPosition(vec3(3.3457f, 0.5f, -1.1816f), Bota3, VAO, lightingShader, vec3(0.0f, -85.6f, 0.0f));
+		drawInPosition(vec3(3.2844f, 0.5f, 0.7824f), Bota4, VAO, lightingShader, vec3(0.0f, -104.0f, 0.0f));
+		drawInPosition(vec3(1.6508f, 0.5f, 2.4625f), Bota5, VAO, lightingShader, vec3(0.0f, -167.0f, 0.0f));
+		drawInPosition(vec3(-0.8515f, 0.5f, 2.4525f), Bota6, VAO, lightingShader, vec3(0.0f, 176.0f, 0.0f));
+		drawInPosition(vec3(-3.0212f, 0.5f, 2.439f), Bota7, VAO, lightingShader, vec3(0.0f, 179.0f, 0.0f));
+		//Corona
+		drawInPosition(vec3(-0.55968f, 0.8705f, -4.4917f), Corona, VAO, lightingShader, vec3(0.0f, 0.0f, 0.0f));
+
 		// Santa Claus
 		// Body
 		mat4 SantaClausBodyMatrix = mat4(1);
@@ -1652,6 +1669,9 @@ int main()
 		****************************/
 		// ChristmasTree
 		drawInPosition(vec3(-3.3525f, 0.31978f, 1.4678f), ChristmasTree, VAO, lightingShader, vec3(0.0f, 71.4f, 0.0f));
+		// Trineo de Santa
+		drawInPosition(vec3(5.86f, 0.0f, -4.6403f), Sleigh, VAO, lightingShader, vec3(0.0f, -310.0f, 0.0f));
+
 		/*_______________________________Personaje Animado___________________________*/ 
 		/*animShader.Use();
 		modelLoc = glGetUniformLocation(animShader.Program, "model");
